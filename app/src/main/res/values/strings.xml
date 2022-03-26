@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Wordle Assist</string>
+    <string name="placeholder">#</string>
+</resources>
