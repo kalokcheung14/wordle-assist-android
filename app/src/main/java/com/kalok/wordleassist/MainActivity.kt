@@ -1,21 +1,19 @@
 package com.kalok.wordleassist
 
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TableRow
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
 import com.kalok.wordleassist.databinding.ActivityMainBinding
 import com.kalok.wordleassist.viewmodels.MainViewModel
 import com.kalok.wordleassist.views.AlphabetCellTextView
-import java.lang.Exception
-import java.lang.annotation.AnnotationTypeMismatchException
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var tableRows: Array<TableRow?>
     private lateinit var viewModel: MainViewModel
     private lateinit var binding: ActivityMainBinding
+    private lateinit var alphabetCellTextViews: Array<AlphabetCellTextView?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,28 +27,46 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         // Organise table rows as an array
-        tableRows = arrayOfNulls(5)
+        val tableRows: Array<TableRow?> = arrayOfNulls(5)
         tableRows[0] = binding.tableRow1
         tableRows[1] = binding.tableRow2
         tableRows[2] = binding.tableRow3
         tableRows[3] = binding.tableRow4
         tableRows[4] = binding.tableRow5
 
-        getSelectedView(viewModel.getSelectedIndex()).setTextColor(Color.RED)
-    }
+        // Organise AlphabetCellTextView as an array
+        alphabetCellTextViews = arrayOfNulls(25)
+        tableRows.forEachIndexed { i, row ->
+            row?.children?.iterator()?.withIndex()?.forEach { view ->
+                // Calculate the corresponding index from 2D to 1D
+                val idx = i * 5 + view.index
+                // Get the value which is the view
+                val v = view.value
 
-    fun getSelectedView(index: Int): AlphabetCellTextView {
-        // Calculate the row and column of the cell/view corresponds to the provided index
-        // and get the cell
-        val row = index / 5
-        val column = 5 * row + index
-        val view = tableRows[row]?.children?.elementAt(column)
+                // Assign the view to the array
+                if (v is AlphabetCellTextView) {
+                    alphabetCellTextViews[idx] = v
+                }
+            }
+        }
 
-        // Return the cell if it is an AlphabetCellTextView
-        if (view is AlphabetCellTextView) {
-            return view
-        } else {
-            throw Exception("Type is not AlphabetTextView")
+        // Set the default selected cell to red text color
+        alphabetCellTextViews[viewModel.getSelectedIndex()]?.setTextColor(Color.RED)
+
+        // Set onClick event on every cell
+        alphabetCellTextViews.forEachIndexed { i, textView ->
+            textView?.setOnClickListener { view ->
+                // Change the selected index in the viewModel when a cell is clicked
+                viewModel.setSelectedIndex(i)
+
+                // Change the text colors of all the cells according to the selected index
+                alphabetCellTextViews.forEachIndexed { j, textView ->
+                    textView?.setTextColor(when(i == j) {
+                        true -> { Color.RED }
+                        false -> { Color.WHITE }
+                    })
+                }
+            }
         }
     }
 }

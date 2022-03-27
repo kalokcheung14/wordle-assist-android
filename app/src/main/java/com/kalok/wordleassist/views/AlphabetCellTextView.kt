@@ -26,6 +26,10 @@ class AlphabetCellTextView @JvmOverloads constructor(
         textSize = 40F
         setPadding(10)
         // Text for preview
-        text = "A"
+        text = PLACE_HOLDER
+    }
+
+    companion object {
+        const val PLACE_HOLDER = "?"
     }
 }
