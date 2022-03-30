@@ -2,8 +2,9 @@ package com.kalok.wordleassist
 
 import android.graphics.Color
 import android.os.Bundle
-import android.widget.TableRow
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
 import com.kalok.wordleassist.databinding.ActivityMainBinding
@@ -11,33 +12,35 @@ import com.kalok.wordleassist.viewmodels.MainViewModel
 import com.kalok.wordleassist.views.AlphabetCellTextView
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewModel: MainViewModel
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var alphabetCellTextViews: Array<AlphabetCellTextView?>
+    private lateinit var _viewModel: MainViewModel
+    private lateinit var _binding: ActivityMainBinding
+    private lateinit var _alphabetCellTextViews: Array<AlphabetCellTextView?>
+    private lateinit var _keyboardButtons: ArrayList<Button?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // View binding
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = binding.root
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = _binding.root
         setContentView(view)
 
         // Get view model
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        _viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        // Organise table rows as an array
-        val tableRows: Array<TableRow?> = arrayOfNulls(5)
-        tableRows[0] = binding.tableRow1
-        tableRows[1] = binding.tableRow2
-        tableRows[2] = binding.tableRow3
-        tableRows[3] = binding.tableRow4
-        tableRows[4] = binding.tableRow5
+        // Organise alphabet table rows as an array
+        val alphabetCellRows: Array<ConstraintLayout> = arrayOf(
+            _binding.tableRow1,
+            _binding.tableRow2,
+            _binding.tableRow3,
+            _binding.tableRow4,
+            _binding.tableRow5
+        )
 
         // Organise AlphabetCellTextView as an array
-        alphabetCellTextViews = arrayOfNulls(25)
-        tableRows.forEachIndexed { i, row ->
-            row?.children?.iterator()?.withIndex()?.forEach { view ->
+        _alphabetCellTextViews = arrayOfNulls(25)
+        alphabetCellRows.forEachIndexed { i, row ->
+            row.children.iterator().withIndex().forEach { view ->
                 // Calculate the corresponding index from 2D to 1D
                 val idx = i * 5 + view.index
                 // Get the value which is the view
@@ -45,27 +48,75 @@ class MainActivity : AppCompatActivity() {
 
                 // Assign the view to the array
                 if (v is AlphabetCellTextView) {
-                    alphabetCellTextViews[idx] = v
+                    _alphabetCellTextViews[idx] = v
+                }
+            }
+        }
+
+        // Organise linear layout as an array
+        val keyboardLinearLayouts = arrayOf(
+            _binding.keyboardRow1LinearLayout,
+            _binding.keyboardRow2LinearLayout,
+            _binding.keyboardRow3LinearLayout
+        )
+
+        // Set up onClick listener for keyboard buttons
+        _keyboardButtons = ArrayList()
+        keyboardLinearLayouts.forEachIndexed { i, layout ->
+            layout.children.iterator().withIndex().forEach { view ->
+                // Check only button view
+                if (view.value is Button) {
+                    val button = view.value as Button
+                    _keyboardButtons.add(button)
+
+                    // Set up onClick Listener
+                    button.setOnClickListener {
+                        // Convert button text to a string
+                        val buttonText = button.text.toString()
+
+                        // If button is not reset button
+                        if (buttonText != getString(R.string.reset)) {
+                            // Get the value of current selected cell index
+                            _viewModel.selectedIndexValue.value.let { idx ->
+                                if (idx != null) {
+                                    // If selected index is not null, set the alphabet at index to the alphabet on the button
+                                    _viewModel.setAlphabetAt(idx, buttonText.single())
+                                    _alphabetCellTextViews[idx]?.text = buttonText.single().toString()
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
 
         // Set the default selected cell to red text color
-        alphabetCellTextViews[viewModel.getSelectedIndex()]?.setTextColor(Color.RED)
+        _viewModel.selectedIndexValue.value?.let { idx ->
+            _alphabetCellTextViews[idx]?.setTextColor(Color.RED)
+        }
 
         // Set onClick event on every cell
-        alphabetCellTextViews.forEachIndexed { i, textView ->
+        _alphabetCellTextViews.forEachIndexed { i, textView ->
             textView?.setOnClickListener { view ->
                 // Change the selected index in the viewModel when a cell is clicked
-                viewModel.setSelectedIndex(i)
+                _viewModel.setSelectedIndex(i)
+            }
+        }
 
-                // Change the text colors of all the cells according to the selected index
-                alphabetCellTextViews.forEachIndexed { j, textView ->
-                    textView?.setTextColor(when(i == j) {
-                        true -> { Color.RED }
-                        false -> { Color.WHITE }
-                    })
-                }
+        // Observe the selected index
+        _viewModel.selectedIndexValue.observe(this) { i ->
+            // Change the text colors of all the cells according to the selected index
+            _alphabetCellTextViews.forEachIndexed { j, textView ->
+                textView?.setTextColor(
+                    when (i == j) {
+                        true -> {
+                            Color.RED
+                        }
+                        false -> {
+                            Color.WHITE
+                        }
+                    }
+                )
             }
         }
     }
