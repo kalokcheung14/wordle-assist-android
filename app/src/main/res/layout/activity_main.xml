@@ -6,12 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TableLayout
+    <LinearLayout
+        app:layout_constraintDimensionRatio="1:1"
         android:id="@+id/tableLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="300dp"
         android:layout_marginTop="100dp"
         android:orientation="vertical"
@@ -20,162 +21,307 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:stretchColumns="*">
-        <TableRow
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tableRow1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_2"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp" />
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_1"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_3"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp" />
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_3"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_2"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_4"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_4"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_5"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_5"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
-        </TableRow>
-        <TableRow
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tableRow2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_6"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_7"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
+                android:padding="10dp"
+                android:layout_margin="4dp" />
+            <com.kalok.wordleassist.views.AlphabetCellTextView
+                android:id="@+id/alphabet_cell_7"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_6"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_8"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
+                android:padding="10dp"
+                android:layout_margin="4dp" />
+            <com.kalok.wordleassist.views.AlphabetCellTextView
+                android:id="@+id/alphabet_cell_8"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_7"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_9"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_9"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_8"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_10"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_10"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_9"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
-            <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="4dp"/>
-            <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="4dp"/>
-        </TableRow>
-        <TableRow
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tableRow3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_11"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_12"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
+                android:padding="10dp"
+                android:layout_margin="4dp" />
+            <com.kalok.wordleassist.views.AlphabetCellTextView
+                android:id="@+id/alphabet_cell_12"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_11"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_13"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
+                android:padding="10dp"
+                android:layout_margin="4dp" />
+            <com.kalok.wordleassist.views.AlphabetCellTextView
+                android:id="@+id/alphabet_cell_13"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_12"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_14"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_14"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_13"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_15"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_15"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_14"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
-            <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="4dp"/>
-            <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="4dp"/>
-        </TableRow>
-        <TableRow
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tableRow4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_16"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_17"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
+                android:padding="10dp"
+                android:layout_margin="4dp" />
+            <com.kalok.wordleassist.views.AlphabetCellTextView
+                android:id="@+id/alphabet_cell_17"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_16"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_18"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
+                android:padding="10dp"
+                android:layout_margin="4dp" />
+            <com.kalok.wordleassist.views.AlphabetCellTextView
+                android:id="@+id/alphabet_cell_18"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_17"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_19"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_19"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_18"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_20"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_20"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_19"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
-            <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="4dp"/>
-            <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="4dp"/>
-        </TableRow>
-        <TableRow
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/tableRow5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_21"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_22"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
+                android:padding="10dp"
+                android:layout_margin="4dp" />
+            <com.kalok.wordleassist.views.AlphabetCellTextView
+                android:id="@+id/alphabet_cell_22"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_21"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_23"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
+                android:padding="10dp"
+                android:layout_margin="4dp" />
+            <com.kalok.wordleassist.views.AlphabetCellTextView
+                android:id="@+id/alphabet_cell_23"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_22"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_24"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_24"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_23"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/alphabet_cell_25"
+                app:layout_constraintDimensionRatio="1:1"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
             <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/alphabet_cell_25"
+                app:layout_constraintStart_toEndOf="@+id/alphabet_cell_24"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="52dp"
+                android:layout_height="0dp"
                 android:padding="10dp"
                 android:layout_margin="4dp"/>
-            <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="4dp"/>
-            <com.kalok.wordleassist.views.AlphabetCellTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_margin="4dp"/>
-        </TableRow>
-    </TableLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="0dp"
@@ -340,21 +486,21 @@
         <LinearLayout
             android:id="@+id/cellStateControlLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
             <View
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_margin="5dp"
                 android:background="@color/gray"/>
             <View
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_margin="5dp"
                 android:background="@color/yellow"/>
             <View
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_margin="5dp"
