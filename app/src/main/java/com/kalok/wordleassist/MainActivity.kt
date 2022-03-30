@@ -1,8 +1,10 @@
 package com.kalok.wordleassist
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.widget.Button
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
@@ -11,6 +13,7 @@ import com.kalok.wordleassist.databinding.ActivityMainBinding
 import com.kalok.wordleassist.viewmodels.MainViewModel
 import com.kalok.wordleassist.views.AlphabetCellTextView
 
+@RequiresApi(Build.VERSION_CODES.M)
 class MainActivity : AppCompatActivity() {
     private lateinit var _viewModel: MainViewModel
     private lateinit var _binding: ActivityMainBinding
@@ -77,12 +80,10 @@ class MainActivity : AppCompatActivity() {
                         // If button is not reset button
                         if (buttonText != getString(R.string.reset)) {
                             // Get the value of current selected cell index
-                            _viewModel.selectedIndexValue.value.let { idx ->
-                                if (idx != null) {
-                                    // If selected index is not null, set the alphabet at index to the alphabet on the button
-                                    _viewModel.setAlphabetAt(idx, buttonText.single())
-                                    _alphabetCellTextViews[idx]?.text = buttonText.single().toString()
-                                }
+                            _viewModel.selectedIndexValue.value?.let { idx ->
+                                // If selected index is not null, set the alphabet at index to the alphabet on the button
+                                _viewModel.setAlphabetAt(idx, buttonText.single())
+                                _alphabetCellTextViews[idx]?.text = buttonText.single().toString()
                             }
                         }
                     }
@@ -108,6 +109,7 @@ class MainActivity : AppCompatActivity() {
             // Change the text colors of all the cells according to the selected index
             _alphabetCellTextViews.forEachIndexed { j, textView ->
                 textView?.setTextColor(
+                    // Change the selected cell's text color to red, other cells' text colors to white
                     when (i == j) {
                         true -> {
                             Color.RED
@@ -118,6 +120,41 @@ class MainActivity : AppCompatActivity() {
                     }
                 )
             }
+        }
+
+        // Set up color buttons and onClick actions to change cell color and update alphabet state
+        val grayView = _binding.grayView
+        val yellowView = _binding.yellowView
+        val greenView = _binding.greenView
+
+        grayView.setOnClickListener {
+            onClickColorButton(R.color.gray)
+        }
+
+        yellowView.setOnClickListener {
+            onClickColorButton(R.color.yellow)
+        }
+
+        greenView.setOnClickListener {
+            onClickColorButton(R.color.green)
+        }
+    }
+
+    private fun onClickColorButton(colorId: Int) {
+        val selectedIdx = _viewModel.selectedIndexValue.value
+        selectedIdx?.let { idx ->
+            // Call different set function for different color code
+            // Gray -> mismatch
+            // Yellow -> misplaced
+            // Green -> match
+            when(idx) {
+                R.color.gray -> _viewModel.setMismatchStateAt(idx)
+                R.color.yellow -> _viewModel.setMisplacedStateAt(idx)
+                R.color.green -> _viewModel.setMatchStateAt(idx)
+            }
+
+            // Change the background color of the selected cell
+            _alphabetCellTextViews[idx]?.setBackgroundColor(getColor(colorId))
         }
     }
 }
