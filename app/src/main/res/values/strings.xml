@@ -1,4 +1,31 @@
 <resources>
     <string name="app_name">Wordle Assist</string>
-    <string name="placeholder">#</string>
+    <string name="placeholder">？</string>
+    <string name="reset">RESET</string>
+    <string name="alphabet_l">L</string>
+    <string name="alphabet_k">K</string>
+    <string name="alphabet_j">J</string>
+    <string name="alphabet_h">H</string>
+    <string name="alphabet_g">G</string>
+    <string name="alphabet_f">F</string>
+    <string name="alphabet_d">D</string>
+    <string name="alphabet_s">S</string>
+    <string name="alphabet_a">A</string>
+    <string name="alphabet_p">P</string>
+    <string name="alphabet_o">O</string>
+    <string name="alphabet_i">I</string>
+    <string name="alphabet_u">U</string>
+    <string name="alphabet_y">Y</string>
+    <string name="alphabet_t">T</string>
+    <string name="alphabet_r">R</string>
+    <string name="alphabet_e">E</string>
+    <string name="alphabet_w">W</string>
+    <string name="alphabet_q">Q</string>
+    <string name="alphabet_z">Z</string>
+    <string name="alphabet_x">X</string>
+    <string name="alphabet_c">C</string>
+    <string name="alphabet_v">V</string>
+    <string name="alphabet_b">B</string>
+    <string name="alphabet_n">N</string>
+    <string name="alphabet_m">M</string>
 </resources>
