@@ -20,7 +20,7 @@ class MainViewModel : ViewModel() {
         _selectedIndex.value = index
     }
 
-    fun setAlphabetAt(index: Int, alphabet: Char) {
+    fun setAlphabetAt(index: Int, alphabet: Char?) {
         if (_inputAlphabets[index] != null) {
             // If input alphabet is not null, assign the alphabet
             _inputAlphabets[index]?.alphabet = alphabet

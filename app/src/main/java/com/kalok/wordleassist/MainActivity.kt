@@ -77,13 +77,18 @@ class MainActivity : AppCompatActivity() {
                         // Convert button text to a string
                         val buttonText = button.text.toString()
 
-                        // If button is not reset button
-                        if (buttonText != getString(R.string.reset)) {
-                            // Get the value of current selected cell index
-                            _viewModel.selectedIndexValue.value?.let { idx ->
-                                // If selected index is not null, set the alphabet at index to the alphabet on the button
+                        // Get the value of current selected cell index
+                        _viewModel.selectedIndexValue.value?.let { idx ->
+                            // If selected index is not null
+                            // If button is not reset button
+                            if (buttonText != getString(R.string.reset)) {
+                                // Set the alphabet at index to the alphabet on the button
                                 _viewModel.setAlphabetAt(idx, buttonText.single())
                                 _alphabetCellTextViews[idx]?.text = buttonText.single().toString()
+                            } else if (buttonText == getString(R.string.reset)) {
+                                // If select index is reset, set the cell at index to placeholder
+                                _viewModel.setAlphabetAt(idx, null)
+                                _alphabetCellTextViews[idx]?.text = getString(R.string.placeholder)
                             }
                         }
                     }
