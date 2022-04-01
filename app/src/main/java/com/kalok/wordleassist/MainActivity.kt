@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var _viewModel: MainViewModel
     private lateinit var _binding: ActivityMainBinding
     private lateinit var _alphabetCellTextViews: Array<AlphabetCellTextView?>
-    private lateinit var _keyboardButtons: ArrayList<Button?>
+    private lateinit var _keyboardButtons: ArrayList<TextView?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,8 +69,8 @@ class MainActivity : AppCompatActivity() {
         keyboardLinearLayouts.forEachIndexed { i, layout ->
             layout.children.iterator().withIndex().forEach { view ->
                 // Check only button view
-                if (view.value is Button) {
-                    val button = view.value as Button
+                if (view.value is TextView) {
+                    val button = view.value as TextView
                     _keyboardButtons.add(button)
 
                     // Set up onClick Listener
@@ -86,13 +87,7 @@ class MainActivity : AppCompatActivity() {
                             } else if (buttonText == getString(R.string.next)) {
                                 // If selected button is next,
                                 // set the selected index to the next index (if has next index)
-                                if (idx < _alphabetCellTextViews.size - 1) {
-                                    // Select next cell
-                                    _viewModel.setSelectedIndex(idx + 1)
-                                } else {
-                                    // Go back to the first cell
-                                    _viewModel.setSelectedIndex(0)
-                                }
+                                selectNextCell(idx)
                             } else if (buttonText == getString(R.string.delete)) {
                                 // If selected button is delete, reset the current cell
                                 // Set the selected index to the last index (if has last index)
@@ -115,6 +110,8 @@ class MainActivity : AppCompatActivity() {
                                 // Otherwise, set the alphabet at index to the alphabet on the button
                                 _viewModel.setAlphabetAt(idx, buttonText.single())
                                 _alphabetCellTextViews[idx]?.text = buttonText.single().toString()
+                                // And select the next cell automatically
+                                selectNextCell(idx)
                             }
                         }
                     }
@@ -174,6 +171,16 @@ class MainActivity : AppCompatActivity() {
     private fun resetCell(idx: Int) {
         _viewModel.setAlphabetAt(idx, null)
         _alphabetCellTextViews[idx]?.text = getString(R.string.placeholder)
+    }
+
+    private fun selectNextCell(idx: Int) {
+        if (idx < _alphabetCellTextViews.size - 1) {
+            // Select next cell
+            _viewModel.setSelectedIndex(idx + 1)
+        } else {
+            // Go back to the first cell
+            _viewModel.setSelectedIndex(0)
+        }
     }
 
     private fun onClickColorButton(colorId: Int) {
