@@ -28,4 +28,7 @@
     <string name="alphabet_b">B</string>
     <string name="alphabet_n">N</string>
     <string name="alphabet_m">M</string>
+    <string name="next">Next</string>
+    <string name="delete">Delete</string>
+    <string name="last">Last</string>
 </resources>

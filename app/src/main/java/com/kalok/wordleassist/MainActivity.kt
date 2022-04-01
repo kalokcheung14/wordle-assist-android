@@ -80,15 +80,41 @@ class MainActivity : AppCompatActivity() {
                         // Get the value of current selected cell index
                         _viewModel.selectedIndexValue.value?.let { idx ->
                             // If selected index is not null
-                            // If button is not reset button
-                            if (buttonText != getString(R.string.reset)) {
-                                // Set the alphabet at index to the alphabet on the button
+                            if (buttonText == getString(R.string.reset)) {
+                                // If selected button is reset, set the cell at index to placeholder
+                                resetCell(idx)
+                            } else if (buttonText == getString(R.string.next)) {
+                                // If selected button is next,
+                                // set the selected index to the next index (if has next index)
+                                if (idx < _alphabetCellTextViews.size - 1) {
+                                    // Select next cell
+                                    _viewModel.setSelectedIndex(idx + 1)
+                                } else {
+                                    // Go back to the first cell
+                                    _viewModel.setSelectedIndex(0)
+                                }
+                            } else if (buttonText == getString(R.string.delete)) {
+                                // If selected button is delete, reset the current cell
+                                // Set the selected index to the last index (if has last index)
+                                resetCell(idx)
+                                if (idx > 0) {
+                                    // Select last cell
+                                    _viewModel.setSelectedIndex(idx - 1)
+                                }
+                            } else if (buttonText == getString(R.string.last)) {
+                                // If selected button is last,
+                                // set the selected index to the last index (if has last index)
+                                if (idx > 0) {
+                                    // Select last cell
+                                    _viewModel.setSelectedIndex(idx - 1)
+                                } else {
+                                    // Go back to the last cell
+                                    _viewModel.setSelectedIndex(_alphabetCellTextViews.size - 1)
+                                }
+                            } else {
+                                // Otherwise, set the alphabet at index to the alphabet on the button
                                 _viewModel.setAlphabetAt(idx, buttonText.single())
                                 _alphabetCellTextViews[idx]?.text = buttonText.single().toString()
-                            } else if (buttonText == getString(R.string.reset)) {
-                                // If select index is reset, set the cell at index to placeholder
-                                _viewModel.setAlphabetAt(idx, null)
-                                _alphabetCellTextViews[idx]?.text = getString(R.string.placeholder)
                             }
                         }
                     }
@@ -143,6 +169,11 @@ class MainActivity : AppCompatActivity() {
         greenView.setOnClickListener {
             onClickColorButton(R.color.green)
         }
+    }
+
+    private fun resetCell(idx: Int) {
+        _viewModel.setAlphabetAt(idx, null)
+        _alphabetCellTextViews[idx]?.text = getString(R.string.placeholder)
     }
 
     private fun onClickColorButton(colorId: Int) {
