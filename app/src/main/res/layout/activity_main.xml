@@ -326,9 +326,10 @@
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginTop="60dp"
+        android:background="@color/color_keyboard"
         app:layout_constraintTop_toBottomOf="@id/tableLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -337,169 +338,217 @@
             android:id="@+id/keyboardRow1LinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_q"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_w"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_e"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_r"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_t"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_y"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_u"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_i"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_o"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_p"/>
+            <TextView
+                style="@style/keyboardButtonStyle"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
+                android:text="@string/delete"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/keyboardRow2LinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_a"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_s"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_d"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_f"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_g"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_h"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_j"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_k"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_l"/>
+            <TextView
+                style="@style/keyboardButtonStyle"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="@string/last"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/keyboardRow3LinearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="2"
                 android:text="@string/reset"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_z"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_x"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_c"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_v"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_b"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_n"/>
-            <Button
+            <TextView
+                style="@style/keyboardButtonStyle"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:text="@string/alphabet_m"/>
+            <TextView
+                style="@style/keyboardButtonStyle"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:text="@string/next"/>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/cellStateControlLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <View
+                android:id="@+id/gray_view"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_margin="5dp"
                 android:background="@color/gray"/>
             <View
+                android:id="@+id/yellow_view"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_margin="5dp"
                 android:background="@color/yellow"/>
             <View
+                android:id="@+id/green_view"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
