@@ -31,4 +31,5 @@
     <string name="next">Next</string>
     <string name="delete">Del</string>
     <string name="last">Last</string>
+    <string name="guess">Guess</string>
 </resources>
