@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kalok.wordleassist.models.InputAlphabet
+import com.kalok.wordleassist.utilities.GuessRule
 
 class MainViewModel : ViewModel() {
     private val _selectedIndex = MutableLiveData<Int>()
@@ -12,12 +13,36 @@ class MainViewModel : ViewModel() {
 
     private val _inputAlphabets: Array<InputAlphabet?> = arrayOfNulls(25)
 
+    private val _guessRule = GuessRule()
+
     init {
         _selectedIndex.value = 0
     }
 
     fun setSelectedIndex(index: Int) {
         _selectedIndex.value = index
+    }
+
+    fun guess() {
+        _inputAlphabets.forEachIndexed { index, inputAlphabet ->
+            inputAlphabet?.state?.let { state ->
+                inputAlphabet.alphabet?.let { alphabet ->
+                    val lowerAlphabet = alphabet.lowercaseChar()
+                    val position = index - 5 * (index / 5)
+                    when (state) {
+                        InputAlphabet.MatchingState.MISPLACED -> _guessRule.addMisplacedAlphabet(position, lowerAlphabet)
+                        InputAlphabet.MatchingState.MISMATCH -> _guessRule.addMismatchAlphabet(lowerAlphabet)
+                        InputAlphabet.MatchingState.MATCH -> _guessRule.addMatchAlphabet(position, lowerAlphabet)
+                    }
+                }
+            }
+        }
+
+        val guessList = _guessRule.showGuessList()
+
+        guessList.forEach {
+            println(it)
+        }
     }
 
     fun setAlphabetAt(index: Int, alphabet: Char?) {
