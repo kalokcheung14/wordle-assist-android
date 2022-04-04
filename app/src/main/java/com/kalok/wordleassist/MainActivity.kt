@@ -3,8 +3,10 @@ package com.kalok.wordleassist
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -14,6 +16,7 @@ import com.kalok.wordleassist.databinding.ActivityMainBinding
 import com.kalok.wordleassist.utilities.GuessRule
 import com.kalok.wordleassist.viewmodels.MainViewModel
 import com.kalok.wordleassist.views.AlphabetCellTextView
+import com.kalok.wordleassist.views.VocabDialogView
 import kotlin.math.pow
 
 @RequiresApi(Build.VERSION_CODES.M)
@@ -143,7 +146,22 @@ class MainActivity : AppCompatActivity() {
         // Set up on click event handling when guess button is clicked
         _guessButton = _binding.guessButton
         _guessButton.setOnClickListener {
-            _viewModel.guess()
+            // Get the result list of guessing from viewModel
+            val vocabList = _viewModel.guess()
+
+            if (vocabList.isNotEmpty()) {
+                // If the list is not empty, display the matched vocabs in a dialog
+                val adapter = ArrayAdapter(this, R.layout.list_item, vocabList)
+                val dialog = VocabDialogView(this, adapter)
+                dialog.show()
+            } else {
+                // If the list is empty, show a toast to the user
+                Toast.makeText(
+                    this,
+                    this.getString(R.string.no_match),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

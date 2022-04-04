@@ -6,14 +6,14 @@ open class GuessRule {
     // Convert string that contains a-z alphabets to a set
     private var _alphabetList: HashSet<Char> = "abcdefghijklmnopqrstuvwxyz".toHashSet()
     // Set to store unused alphabets
-    private var _unusedAlphabetList: HashSet<Char> = HashSet()
+    private var _mismatchAlphabetList: HashSet<Char> = HashSet()
     // Array to store correct alphabets
     private var _matchedAlphabetList: CharArray = CharArray(NUM_OF_LETTERS)
     // List to store misplaced alphabets
     private var _misplacedAlphabetList: ArrayList<HashSet<Char>> = ArrayList()
 
     fun addMismatchAlphabet(character: Char) {
-        _unusedAlphabetList.add(character)
+        _mismatchAlphabetList.add(character)
     }
 
     fun addMatchAlphabet(position: Int, alphabet: Char) {
@@ -31,7 +31,7 @@ open class GuessRule {
         val matchedWords = ArrayList<String>()
 
         // Remove unused alphabets from the alphabet list
-        _alphabetList.removeAll(_unusedAlphabetList)
+        _alphabetList.removeAll(_mismatchAlphabetList)
 
         // Loop through all the possible words
         for (word in _wordList) {
@@ -40,7 +40,7 @@ open class GuessRule {
 
             // Check if the word contains any unused alphabets
             // If yes, proceed to handle the next word
-            wordCharList.retainAll(_unusedAlphabetList)
+            wordCharList.retainAll(_mismatchAlphabetList)
             if (wordCharList.toTypedArray().isNotEmpty()) {
                 continue
             }
@@ -105,7 +105,7 @@ open class GuessRule {
 
     fun clear() {
         // Clear all guess criteria
-        _unusedAlphabetList = HashSet()
+        _mismatchAlphabetList = HashSet()
         _misplacedAlphabetList = ArrayList()
         _matchedAlphabetList = CharArray(NUM_OF_LETTERS)
         initList()

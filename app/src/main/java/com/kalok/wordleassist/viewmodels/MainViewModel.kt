@@ -24,15 +24,17 @@ class MainViewModel : ViewModel() {
         _selectedIndex.value = index
     }
 
-    fun guess() {
+    fun guess(): ArrayList<String> {
         // Pass the input from cells to the GuessRule instance
         _inputAlphabets.forEachIndexed { index, inputAlphabet ->
             inputAlphabet?.state?.let { state ->
                 inputAlphabet.alphabet?.let { alphabet ->
-                    // Convert input to lower case for comparison
                     val numOfLetters = GuessRule.NUM_OF_LETTERS
+                    // Convert input to lower case for comparison
                     val lowerAlphabet = alphabet.lowercaseChar()
+                    // Calculate the relative position of the alphabet
                     val position = index - numOfLetters * (index / numOfLetters)
+                    // Add alphabet to rule according to its state
                     when (state) {
                         InputAlphabet.MatchingState.MISPLACED -> _guessRule.addMisplacedAlphabet(position, lowerAlphabet)
                         InputAlphabet.MatchingState.MISMATCH -> _guessRule.addMismatchAlphabet(lowerAlphabet)
@@ -42,13 +44,13 @@ class MainViewModel : ViewModel() {
             }
         }
 
+        // Get the guess vocab list
         val guessList = _guessRule.showGuessList()
 
-        guessList.forEach {
-            println(it)
-        }
-
+        // Clear the rule after each guess
         _guessRule.clear()
+
+        return guessList
     }
 
     fun setAlphabetAt(index: Int, alphabet: Char?) {
