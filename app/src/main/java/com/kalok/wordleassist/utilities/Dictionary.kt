@@ -5,7 +5,7 @@ class Dictionary {
         val instance = Dictionary()
     }
 
-    val wordList = hashSetOf(
+    val vocabList = hashSetOf(
         "cigar",
         "rebut",
         "sissy",

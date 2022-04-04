@@ -12,7 +12,7 @@ class MainViewModel : ViewModel() {
     val selectedIndexValue: LiveData<Int>
         get() = _selectedIndex
 
-    private val _inputAlphabets: Array<InputAlphabet?> = arrayOfNulls(GuessRule.NUM_OF_LETTERS.toDouble().pow(2).toInt())
+    private var _inputAlphabets: Array<InputAlphabet?> = arrayOfNulls(GuessRule.NUM_OF_LETTERS.toDouble().pow(2).toInt())
 
     private val _guessRule = GuessRule()
 
@@ -85,5 +85,12 @@ class MainViewModel : ViewModel() {
             // Set the default alphabet to null
             _inputAlphabets[index] = InputAlphabet(null, state)
         }
+    }
+
+    fun clearInput() {
+        // Reset input alphabet array
+        _inputAlphabets = arrayOfNulls(GuessRule.NUM_OF_LETTERS.toDouble().pow(2).toInt())
+        // Reset selected index value
+        _selectedIndex.value = 0
     }
 }

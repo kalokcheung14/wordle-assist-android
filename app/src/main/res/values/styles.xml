@@ -6,4 +6,11 @@
         <item name="android:gravity">center</item>
         <item name="android:backgroundTint">@color/color_keyboard</item>
     </style>
+    <style name="alphabetCellStyle">
+        <item name="android:layout_width">52dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
+    </style>
 </resources>

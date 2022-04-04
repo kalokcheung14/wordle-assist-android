@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var _alphabetCellTextViews: Array<AlphabetCellTextView?>
     private lateinit var _keyboardButtons: ArrayList<TextView?>
     private lateinit var _guessButton: Button
+    private lateinit var _clearButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -161,6 +162,18 @@ class MainActivity : AppCompatActivity() {
                     this.getString(R.string.no_match),
                     Toast.LENGTH_SHORT
                 ).show()
+            }
+        }
+
+        // Set up on click event handling when clear button is clicked
+        _clearButton = _binding.clearButton
+        _clearButton.setOnClickListener {
+            // Clear alphabet input
+            _viewModel.clearInput()
+            // Reset alphabet and color for each cell
+            _alphabetCellTextViews.forEachIndexed { i, _ ->
+                _alphabetCellTextViews[i]?.text = getString(R.string.placeholder)
+                _alphabetCellTextViews[i]?.setBackgroundColor(getColor(R.color.gray))
             }
         }
     }

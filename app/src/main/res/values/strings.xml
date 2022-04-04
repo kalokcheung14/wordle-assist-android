@@ -35,4 +35,5 @@
     <string name="close">Close</string>
     <string name="list_of_guess">List of guess</string>
     <string name="no_match">No vocabs in my dictionary matched the specific conditions</string>
+    <string name="clear">Clear</string>
 </resources>

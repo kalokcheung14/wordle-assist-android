@@ -1,14 +1,14 @@
 package com.kalok.wordleassist.utilities
 
 open class GuessRule {
-    private val _wordList = Dictionary.instance.wordList
+    private val _vocabList = Dictionary.instance.vocabList
 
     // Convert string that contains a-z alphabets to a set
     private var _alphabetList: HashSet<Char> = "abcdefghijklmnopqrstuvwxyz".toHashSet()
     // Set to store unused alphabets
     private var _mismatchAlphabetList: HashSet<Char> = HashSet()
     // Array to store correct alphabets
-    private var _matchedAlphabetList: CharArray = CharArray(NUM_OF_LETTERS)
+    private var _matchedAlphabetList = arrayOfNulls<Char>(NUM_OF_LETTERS)
     // List to store misplaced alphabets
     private var _misplacedAlphabetList: ArrayList<HashSet<Char>> = ArrayList()
 
@@ -34,14 +34,14 @@ open class GuessRule {
         _alphabetList.removeAll(_mismatchAlphabetList)
 
         // Loop through all the possible words
-        for (word in _wordList) {
+        for (vocab in _vocabList) {
             // Convert the word to a set
-            var wordCharList = word.toHashSet()
+            var vocabCharList = vocab.toHashSet()
 
             // Check if the word contains any unused alphabets
             // If yes, proceed to handle the next word
-            wordCharList.retainAll(_mismatchAlphabetList)
-            if (wordCharList.toTypedArray().isNotEmpty()) {
+            vocabCharList.retainAll(_mismatchAlphabetList)
+            if (vocabCharList.toTypedArray().isNotEmpty()) {
                 continue
             }
 
@@ -49,14 +49,15 @@ open class GuessRule {
             var match = true
 
             // Loop through each alphabet of the word
-            for (i in word.indices) {
-                val c = word[i]
+            for (i in vocab.indices) {
+                val letterInVocab = vocab[i]
 
-                // If the alphabet at index i is not 0
+                // If the alphabet at index i is not null
                 // e.g. there is an alphabet input correctly at this index
-                if (_matchedAlphabetList[i] != '0') {
+                val matchedAlphabet = _matchedAlphabetList[i]
+                if (matchedAlphabet != null) {
                     // Check if the alphabets match
-                    if (c == _matchedAlphabetList[i]) {
+                    if (letterInVocab == matchedAlphabet) {
                         match = true
                     } else {
                         // If one alphabet does not match = it does not match at all
@@ -69,7 +70,7 @@ open class GuessRule {
                 // If an alphabet not in this position is in this position
                 // e.g. this word is not a match
                 // so stop checking the rest of the word
-                if (_misplacedAlphabetList[i].contains(c)) {
+                if (_misplacedAlphabetList[i].contains(letterInVocab)) {
                     match = false
                     break
                 }
@@ -83,12 +84,12 @@ open class GuessRule {
                 }
 
                 // Convert the word to a set of alphabets
-                wordCharList = word.toHashSet()
+                vocabCharList = vocab.toHashSet()
 
                 // Check that if the word contains the misplaced alphabets
                 // If not, it does not match
                 for (k in allChars) {
-                    if (!wordCharList.contains(k)) {
+                    if (!vocabCharList.contains(k)) {
                         match = false
                         break
                     }
@@ -97,7 +98,7 @@ open class GuessRule {
 
             // Add the word to the list of matched word if it is completely matched
             if (match) {
-                matchedWords.add(word)
+                matchedWords.add(vocab)
             }
         }
         return matchedWords
@@ -107,7 +108,7 @@ open class GuessRule {
         // Clear all guess criteria
         _mismatchAlphabetList = HashSet()
         _misplacedAlphabetList = ArrayList()
-        _matchedAlphabetList = CharArray(NUM_OF_LETTERS)
+        _matchedAlphabetList = arrayOfNulls(NUM_OF_LETTERS)
         initList()
     }
 
@@ -122,7 +123,7 @@ open class GuessRule {
     private fun initList() {
         // Initialise alphabets array and set
         for (i in 0 until NUM_OF_LETTERS) {
-            _matchedAlphabetList[i] = '0'
+            _matchedAlphabetList[i] = null
             _misplacedAlphabetList.add(HashSet())
         }
     }
