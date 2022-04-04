@@ -5,13 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kalok.wordleassist.models.InputAlphabet
 import com.kalok.wordleassist.utilities.GuessRule
+import kotlin.math.pow
 
 class MainViewModel : ViewModel() {
     private val _selectedIndex = MutableLiveData<Int>()
     val selectedIndexValue: LiveData<Int>
         get() = _selectedIndex
 
-    private val _inputAlphabets: Array<InputAlphabet?> = arrayOfNulls(25)
+    private val _inputAlphabets: Array<InputAlphabet?> = arrayOfNulls(GuessRule.NUM_OF_LETTERS.toDouble().pow(2).toInt())
 
     private val _guessRule = GuessRule()
 
@@ -24,11 +25,14 @@ class MainViewModel : ViewModel() {
     }
 
     fun guess() {
+        // Pass the input from cells to the GuessRule instance
         _inputAlphabets.forEachIndexed { index, inputAlphabet ->
             inputAlphabet?.state?.let { state ->
                 inputAlphabet.alphabet?.let { alphabet ->
+                    // Convert input to lower case for comparison
+                    val numOfLetters = GuessRule.NUM_OF_LETTERS
                     val lowerAlphabet = alphabet.lowercaseChar()
-                    val position = index - 5 * (index / 5)
+                    val position = index - numOfLetters * (index / numOfLetters)
                     when (state) {
                         InputAlphabet.MatchingState.MISPLACED -> _guessRule.addMisplacedAlphabet(position, lowerAlphabet)
                         InputAlphabet.MatchingState.MISMATCH -> _guessRule.addMismatchAlphabet(lowerAlphabet)
@@ -43,6 +47,8 @@ class MainViewModel : ViewModel() {
         guessList.forEach {
             println(it)
         }
+
+        _guessRule.clear()
     }
 
     fun setAlphabetAt(index: Int, alphabet: Char?) {

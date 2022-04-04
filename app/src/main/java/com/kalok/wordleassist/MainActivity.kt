@@ -11,8 +11,10 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
 import com.kalok.wordleassist.databinding.ActivityMainBinding
+import com.kalok.wordleassist.utilities.GuessRule
 import com.kalok.wordleassist.viewmodels.MainViewModel
 import com.kalok.wordleassist.views.AlphabetCellTextView
+import kotlin.math.pow
 
 @RequiresApi(Build.VERSION_CODES.M)
 class MainActivity : AppCompatActivity() {
@@ -42,12 +44,14 @@ class MainActivity : AppCompatActivity() {
             _binding.tableRow5
         )
 
+        val numOfLetters = GuessRule.NUM_OF_LETTERS
+
         // Organise AlphabetCellTextView as an array
-        _alphabetCellTextViews = arrayOfNulls(25)
+        _alphabetCellTextViews = arrayOfNulls(numOfLetters.toDouble().pow(2).toInt())
         alphabetCellRows.forEachIndexed { i, row ->
             row.children.iterator().withIndex().forEach { view ->
                 // Calculate the corresponding index from 2D to 1D
-                val idx = i * 5 + view.index
+                val idx = i * numOfLetters + view.index
                 // Get the value which is the view
                 val v = view.value
 

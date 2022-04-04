@@ -8,9 +8,9 @@ open class GuessRule {
     // Set to store unused alphabets
     private var _unusedAlphabetList: HashSet<Char> = HashSet()
     // Array to store correct alphabets
-    private var _matchedAlphabetList: CharArray = CharArray(NUM_OF_CHAR)
+    private var _matchedAlphabetList: CharArray = CharArray(NUM_OF_LETTERS)
     // List to store misplaced alphabets
-    private var _misPlacedAlphabetList: ArrayList<HashSet<Char>> = ArrayList()
+    private var _misplacedAlphabetList: ArrayList<HashSet<Char>> = ArrayList()
 
     fun addMismatchAlphabet(character: Char) {
         _unusedAlphabetList.add(character)
@@ -21,9 +21,9 @@ open class GuessRule {
     }
 
     fun addMisplacedAlphabet(position: Int, character: Char) {
-        val charSet = _misPlacedAlphabetList[position]
+        val charSet = _misplacedAlphabetList[position]
         charSet.add(character)
-        _misPlacedAlphabetList[position] = charSet
+        _misplacedAlphabetList[position] = charSet
     }
 
     fun showGuessList(): ArrayList<String> {
@@ -69,7 +69,7 @@ open class GuessRule {
                 // If an alphabet not in this position is in this position
                 // e.g. this word is not a match
                 // so stop checking the rest of the word
-                if (_misPlacedAlphabetList[i].contains(c)) {
+                if (_misplacedAlphabetList[i].contains(c)) {
                     match = false
                     break
                 }
@@ -78,7 +78,7 @@ open class GuessRule {
                 val allChars = HashSet<Char>()
 
                 // Put all misplaced alphabets in one single set
-                for (chars in _misPlacedAlphabetList) {
+                for (chars in _misplacedAlphabetList) {
                     allChars.addAll(chars)
                 }
 
@@ -105,20 +105,25 @@ open class GuessRule {
 
     fun clear() {
         // Clear all guess criteria
-        _unusedAlphabetList.clear()
-        _misPlacedAlphabetList.clear()
-        _matchedAlphabetList = CharArray(NUM_OF_CHAR)
+        _unusedAlphabetList = HashSet()
+        _misplacedAlphabetList = ArrayList()
+        _matchedAlphabetList = CharArray(NUM_OF_LETTERS)
+        initList()
     }
 
     companion object {
-        const val NUM_OF_CHAR = 5
+        const val NUM_OF_LETTERS = 5
     }
 
     init {
+        initList()
+    }
+
+    private fun initList() {
         // Initialise alphabets array and set
-        for (i in 0 until NUM_OF_CHAR) {
+        for (i in 0 until NUM_OF_LETTERS) {
             _matchedAlphabetList[i] = '0'
-            _misPlacedAlphabetList.add(HashSet())
+            _misplacedAlphabetList.add(HashSet())
         }
     }
 }
