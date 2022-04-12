@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="keyboardButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+    <style name="keyboardButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">12sp</item>
         <item name="android:gravity">center</item>
+        <item name="android:backgroundTint">@color/color_keyboard</item>
+    </style>
+    <style name="alphabetCellStyle">
+        <item name="android:layout_width">52dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
     </style>
 </resources>
