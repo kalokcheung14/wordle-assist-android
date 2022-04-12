@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -24,9 +23,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var _viewModel: MainViewModel
     private lateinit var _binding: ActivityMainBinding
     private lateinit var _alphabetCellTextViews: Array<AlphabetCellTextView?>
-    private lateinit var _keyboardButtons: ArrayList<TextView?>
-    private lateinit var _guessButton: Button
-    private lateinit var _clearButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,13 +70,13 @@ class MainActivity : AppCompatActivity() {
         )
 
         // Set up onClick listener for keyboard buttons
-        _keyboardButtons = ArrayList()
+        val keyboardButtons: ArrayList<TextView?> = ArrayList()
         keyboardLinearLayouts.forEach { layout ->
             layout.children.iterator().withIndex().forEach { view ->
                 // Check only button view
                 if (view.value is TextView) {
                     val button = view.value as TextView
-                    _keyboardButtons.add(button)
+                    keyboardButtons.add(button)
 
                     // Set up onClick Listener
                     button.setOnClickListener {
@@ -145,8 +141,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set up on click event handling when guess button is clicked
-        _guessButton = _binding.guessButton
-        _guessButton.setOnClickListener {
+        val guessButton = _binding.guessButton
+        guessButton.setOnClickListener {
             // Get the result list of guessing from viewModel
             val vocabList = _viewModel.guess()
 
@@ -166,8 +162,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set up on click event handling when clear button is clicked
-        _clearButton = _binding.clearButton
-        _clearButton.setOnClickListener {
+        val clearButton = _binding.clearButton
+        clearButton.setOnClickListener {
             // Clear alphabet input
             _viewModel.clearInput()
             // Reset alphabet and color for each cell
