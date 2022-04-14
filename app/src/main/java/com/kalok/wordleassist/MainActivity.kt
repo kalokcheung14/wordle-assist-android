@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -63,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Organise linear layout as an array
-        val keyboardLinearLayouts = arrayOf(
+        val keyboardLinearLayouts: Array<LinearLayout> = arrayOf(
             _binding.keyboardRow1LinearLayout,
             _binding.keyboardRow2LinearLayout,
             _binding.keyboardRow3LinearLayout
@@ -148,14 +149,14 @@ class MainActivity : AppCompatActivity() {
 
             if (vocabList.isNotEmpty()) {
                 // If the list is not empty, display the matched vocabs in a dialog
-                val adapter = ArrayAdapter(this, R.layout.list_item, vocabList)
+                val adapter = ArrayAdapter(applicationContext, R.layout.list_item, vocabList)
                 val dialog = VocabDialogView(this, adapter)
                 dialog.show()
             } else {
                 // If the list is empty, show a toast to the user
                 Toast.makeText(
-                    this,
-                    this.getString(R.string.no_match),
+                    applicationContext,
+                    getString(R.string.no_match),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -187,37 +188,39 @@ class MainActivity : AppCompatActivity() {
      */
     private fun handleKeyboardButtonEvent(idx: Int, buttonText: CharSequence) {
         // If selected index is not null
-        if (buttonText == getString(R.string.reset)) {
+        when (buttonText) {
             // If selected button is reset, set the cell at index to placeholder
-            resetCell(idx)
-        } else if (buttonText == getString(R.string.next)) {
+            getString(R.string.reset) -> resetCell(idx)
             // If selected button is next,
             // set the selected index to the next index (if has next index)
-            selectNextCell(idx)
-        } else if (buttonText == getString(R.string.delete)) {
-            // If selected button is delete, reset the current cell
-            // Set the selected index to the last index (if has last index)
-            resetCell(idx)
-            if (idx > 0) {
-                // Select last cell
-                _viewModel.setSelectedIndex(idx - 1)
+            getString(R.string.next) -> selectNextCell(idx)
+            getString(R.string.delete) -> {
+                // If selected button is delete, reset the current cell
+                // Set the selected index to the last index (if has last index)
+                resetCell(idx)
+                if (idx > 0) {
+                    // Select last cell
+                    _viewModel.setSelectedIndex(idx - 1)
+                }
             }
-        } else if (buttonText == getString(R.string.last)) {
-            // If selected button is last,
-            // set the selected index to the last index (if has last index)
-            if (idx > 0) {
-                // Select last cell
-                _viewModel.setSelectedIndex(idx - 1)
-            } else {
-                // Go back to the last cell
-                _viewModel.setSelectedIndex(_alphabetCellTextViews.size - 1)
+            getString(R.string.last) -> {
+                // If selected button is last,
+                // set the selected index to the last index (if has last index)
+                if (idx > 0) {
+                    // Select last cell
+                    _viewModel.setSelectedIndex(idx - 1)
+                } else {
+                    // Go back to the last cell
+                    _viewModel.setSelectedIndex(_alphabetCellTextViews.size - 1)
+                }
             }
-        } else {
-            // Otherwise, set the alphabet at index to the alphabet on the button
-            _viewModel.setAlphabetAt(idx, buttonText.single())
-            _alphabetCellTextViews[idx]?.text = buttonText.single().toString()
-            // And select the next cell automatically
-            selectNextCell(idx)
+            else -> {
+                // Otherwise, set the alphabet at index to the alphabet on the button
+                _viewModel.setAlphabetAt(idx, buttonText.single())
+                _alphabetCellTextViews[idx]?.text = buttonText.single().toString()
+                // And select the next cell automatically
+                selectNextCell(idx)
+            }
         }
     }
 
