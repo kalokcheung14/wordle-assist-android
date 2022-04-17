@@ -5,16 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kalok.wordleassist.models.InputAlphabet
 import com.kalok.wordleassist.utilities.GuessRule
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlin.math.pow
 
-class MainViewModel : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(private val _guessRule: GuessRule) : ViewModel() {
     private val _selectedIndex = MutableLiveData<Int>()
     val selectedIndexValue: LiveData<Int>
         get() = _selectedIndex
 
     private var _inputAlphabets: Array<InputAlphabet?> = arrayOfNulls(GuessRule.NUM_OF_LETTERS.toDouble().pow(2).toInt())
-
-    private val _guessRule = GuessRule()
 
     init {
         _selectedIndex.value = 0
