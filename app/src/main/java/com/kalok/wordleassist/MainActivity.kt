@@ -17,8 +17,10 @@ import com.kalok.wordleassist.utilities.GuessRule
 import com.kalok.wordleassist.viewmodels.MainViewModel
 import com.kalok.wordleassist.views.AlphabetCellTextView
 import com.kalok.wordleassist.views.VocabDialogView
+import dagger.hilt.android.AndroidEntryPoint
 import kotlin.math.pow
 
+@AndroidEntryPoint
 @RequiresApi(Build.VERSION_CODES.M)
 class MainActivity : AppCompatActivity() {
     private lateinit var _viewModel: MainViewModel

@@ -1,7 +1,9 @@
 package com.kalok.wordleassist.utilities
 
-open class GuessRule {
-    private val _vocabList = Dictionary.instance.vocabList
+import javax.inject.Inject
+
+open class GuessRule @Inject constructor(dictionary: Dictionary) {
+    private val _vocabList = dictionary.vocabList
 
     // Convert string that contains a-z alphabets to a set
     private var _alphabetList: HashSet<Char> = "abcdefghijklmnopqrstuvwxyz".toHashSet()

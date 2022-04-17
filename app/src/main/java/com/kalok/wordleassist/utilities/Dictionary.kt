@@ -1,10 +1,8 @@
 package com.kalok.wordleassist.utilities
 
-class Dictionary {
-    companion object {
-        val instance = Dictionary()
-    }
+import javax.inject.Inject
 
+class Dictionary @Inject constructor() {
     val vocabList = hashSetOf(
         "cigar",
         "rebut",
