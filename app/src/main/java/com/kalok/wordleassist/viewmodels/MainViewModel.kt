@@ -11,7 +11,9 @@ import kotlin.math.pow
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val _guessRule: GuessRule) : ViewModel() {
-    private val _selectedIndex = MutableLiveData<Int>()
+    private val _selectedIndex by lazy {
+        MutableLiveData<Int>()
+    }
     val selectedIndexValue: LiveData<Int>
         get() = _selectedIndex
 

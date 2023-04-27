@@ -3,7 +3,9 @@ package com.kalok.wordleassist.utilities
 import javax.inject.Inject
 
 open class GuessRule @Inject constructor(dictionary: Dictionary) {
-    private val _vocabList = dictionary.vocabList
+    private val _vocabList by lazy {
+        dictionary.vocabList
+    }
 
     // Convert string that contains a-z alphabets to a set
     private var _alphabetList: HashSet<Char> = "abcdefghijklmnopqrstuvwxyz".toHashSet()
@@ -59,12 +61,10 @@ open class GuessRule @Inject constructor(dictionary: Dictionary) {
                 val matchedAlphabet = _matchedAlphabetList[i]
                 if (matchedAlphabet != null) {
                     // Check if the alphabets match
-                    if (letterInVocab == matchedAlphabet) {
-                        match = true
-                    } else {
+                    match = letterInVocab == matchedAlphabet
+                    if (match.not()) {
                         // If one alphabet does not match = it does not match at all
                         // stop checking the rest of the word
-                        match = false
                         break
                     }
                 }
@@ -81,9 +81,7 @@ open class GuessRule @Inject constructor(dictionary: Dictionary) {
                 val allChars = HashSet<Char>()
 
                 // Put all misplaced alphabets in one single set
-                for (chars in _misplacedAlphabetList) {
-                    allChars.addAll(chars)
-                }
+                allChars.addAll(_misplacedAlphabetList.flatten())
 
                 // Convert the word to a set of alphabets
                 vocabCharList = vocab.toHashSet()
@@ -124,9 +122,7 @@ open class GuessRule @Inject constructor(dictionary: Dictionary) {
 
     private fun initList() {
         // Initialise alphabets array and set
-        for (i in 0 until NUM_OF_LETTERS) {
-            _matchedAlphabetList[i] = null
-            _misplacedAlphabetList.add(HashSet())
-        }
+        _matchedAlphabetList = arrayOfNulls(NUM_OF_LETTERS)
+        _misplacedAlphabetList.fill(HashSet())
     }
 }

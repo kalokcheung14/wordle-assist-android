@@ -127,52 +127,51 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set up color buttons and onClick actions to change cell color and update alphabet state
-        val grayView = _binding.grayView
-        val yellowView = _binding.yellowView
-        val greenView = _binding.greenView
-
-        grayView.setOnClickListener {
-            onClickColorButton(R.color.gray)
-        }
-
-        yellowView.setOnClickListener {
-            onClickColorButton(R.color.yellow)
-        }
-
-        greenView.setOnClickListener {
-            onClickColorButton(R.color.green)
-        }
-
-        // Set up on click event handling when guess button is clicked
-        val guessButton = _binding.guessButton
-        guessButton.setOnClickListener {
-            // Get the result list of guessing from viewModel
-            val vocabList = _viewModel.guess()
-
-            if (vocabList.isNotEmpty()) {
-                // If the list is not empty, display the matched vocabs in a dialog
-                val adapter = ArrayAdapter(applicationContext, R.layout.list_item, vocabList)
-                val dialog = VocabDialogView(this, adapter)
-                dialog.show()
-            } else {
-                // If the list is empty, show a toast to the user
-                Toast.makeText(
-                    applicationContext,
-                    getString(R.string.no_match),
-                    Toast.LENGTH_SHORT
-                ).show()
+        _binding.run {
+            grayView.setOnClickListener {
+                onClickColorButton(R.color.gray)
             }
-        }
 
-        // Set up on click event handling when clear button is clicked
-        val clearButton = _binding.clearButton
-        clearButton.setOnClickListener {
-            // Clear alphabet input
-            _viewModel.clearInput()
-            // Reset alphabet and color for each cell
-            _alphabetCellTextViews.forEachIndexed { i, _ ->
-                _alphabetCellTextViews[i]?.text = getString(R.string.placeholder)
-                _alphabetCellTextViews[i]?.setBackgroundColor(getColor(R.color.gray))
+            yellowView.setOnClickListener {
+                onClickColorButton(R.color.yellow)
+            }
+
+            greenView.setOnClickListener {
+                onClickColorButton(R.color.green)
+            }
+
+            // Set up on click event handling when guess button is clicked
+            guessButton.setOnClickListener {
+                // Get the result list of guessing from viewModel
+                val vocabList = _viewModel.guess()
+
+                if (vocabList.isNotEmpty()) {
+                    // If the list is not empty, display the matched vocabs in a dialog
+                    VocabDialogView(
+                        applicationContext,
+                        ArrayAdapter(applicationContext, R.layout.list_item, vocabList)
+                    ).show()
+                } else {
+                    // If the list is empty, show a toast to the user
+                    Toast.makeText(
+                        applicationContext,
+                        getString(R.string.no_match),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            // Set up on click event handling when clear button is clicked
+            clearButton.setOnClickListener {
+                // Clear alphabet input
+                _viewModel.clearInput()
+                // Reset alphabet and color for each cell
+                _alphabetCellTextViews.forEach { view ->
+                    view?.apply {
+                        text = getString(R.string.placeholder)
+                        setBackgroundColor(getColor(R.color.gray))
+                    }
+                }
             }
         }
     }
@@ -208,13 +207,15 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.last) -> {
                 // If selected button is last,
                 // set the selected index to the last index (if has last index)
-                if (idx > 0) {
-                    // Select last cell
-                    _viewModel.setSelectedIndex(idx - 1)
-                } else {
-                    // Go back to the last cell
-                    _viewModel.setSelectedIndex(_alphabetCellTextViews.size - 1)
-                }
+                _viewModel.setSelectedIndex(
+                    if (idx > 0) {
+                        // Select last cell
+                        idx - 1
+                    } else {
+                        // Go back to the last cell
+                        _alphabetCellTextViews.size - 1
+                    }
+                )
             }
             else -> {
                 // Otherwise, set the alphabet at index to the alphabet on the button
@@ -230,13 +231,15 @@ class MainActivity : AppCompatActivity() {
      * Function to select next cell in the table
      */
     private fun selectNextCell(idx: Int) {
-        if (idx < _alphabetCellTextViews.size - 1) {
-            // Select next cell
-            _viewModel.setSelectedIndex(idx + 1)
-        } else {
-            // Go back to the first cell
-            _viewModel.setSelectedIndex(0)
-        }
+        _viewModel.setSelectedIndex(
+            if (idx < _alphabetCellTextViews.size - 1) {
+                // Select next cell
+                idx + 1
+            } else {
+                // Go back to the first cell
+                0
+            }
+        )
     }
 
     /**
