@@ -1,30 +1,27 @@
 package com.kalok.wordleassist.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kalok.wordleassist.models.InputAlphabet
 import com.kalok.wordleassist.utilities.GuessRule
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import kotlin.math.pow
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val _guessRule: GuessRule) : ViewModel() {
-    private val _selectedIndex by lazy {
-        MutableLiveData<Int>()
+    private val _selectedIndexFlow by lazy {
+        MutableStateFlow(0)
     }
-    val selectedIndexValue: LiveData<Int>
-        get() = _selectedIndex
+    val selectedIndexFlow by lazy {
+        _selectedIndexFlow.asStateFlow()
+    }
 
     private var _inputAlphabets: Array<InputAlphabet?> = arrayOfNulls(GuessRule.NUM_OF_LETTERS.toDouble().pow(2).toInt())
 
-    init {
-        _selectedIndex.value = 0
-    }
-
     fun setSelectedIndex(index: Int) {
-        _selectedIndex.value = index
+        _selectedIndexFlow.value = index
     }
 
     fun guess(): ArrayList<String> {
@@ -94,6 +91,6 @@ class MainViewModel @Inject constructor(private val _guessRule: GuessRule) : Vie
         // Reset input alphabet array
         _inputAlphabets = arrayOfNulls(GuessRule.NUM_OF_LETTERS.toDouble().pow(2).toInt())
         // Reset selected index value
-        _selectedIndex.value = 0
+        _selectedIndexFlow.value = 0
     }
 }

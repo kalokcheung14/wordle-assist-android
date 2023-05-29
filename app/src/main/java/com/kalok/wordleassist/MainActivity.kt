@@ -14,6 +14,7 @@ import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
 import com.kalok.wordleassist.databinding.ActivityMainBinding
 import com.kalok.wordleassist.utilities.GuessRule
+import com.kalok.wordleassist.utilities.launchAndCollectIn
 import com.kalok.wordleassist.viewmodels.MainViewModel
 import com.kalok.wordleassist.views.AlphabetCellTextView
 import com.kalok.wordleassist.views.VocabDialogView
@@ -24,27 +25,26 @@ import kotlin.math.pow
 @RequiresApi(Build.VERSION_CODES.M)
 class MainActivity : AppCompatActivity() {
     private lateinit var _viewModel: MainViewModel
-    private lateinit var _binding: ActivityMainBinding
     private lateinit var _alphabetCellTextViews: Array<AlphabetCellTextView?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // View binding
-        _binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = _binding.root
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
         setContentView(view)
 
         // Get view model
-        _viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        _viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         // Organise alphabet table rows as an array
         val alphabetCellRows: Array<ConstraintLayout> = arrayOf(
-            _binding.tableRow1,
-            _binding.tableRow2,
-            _binding.tableRow3,
-            _binding.tableRow4,
-            _binding.tableRow5
+            binding.tableRow1,
+            binding.tableRow2,
+            binding.tableRow3,
+            binding.tableRow4,
+            binding.tableRow5
         )
 
         val numOfLetters = GuessRule.NUM_OF_LETTERS
@@ -67,9 +67,9 @@ class MainActivity : AppCompatActivity() {
 
         // Organise linear layout as an array
         val keyboardLinearLayouts: Array<LinearLayout> = arrayOf(
-            _binding.keyboardRow1LinearLayout,
-            _binding.keyboardRow2LinearLayout,
-            _binding.keyboardRow3LinearLayout
+            binding.keyboardRow1LinearLayout,
+            binding.keyboardRow2LinearLayout,
+            binding.keyboardRow3LinearLayout
         )
 
         // Set up onClick listener for keyboard buttons
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
                         val buttonText = button.text.toString()
 
                         // Get the value of current selected cell index
-                        _viewModel.selectedIndexValue.value?.let { idx ->
+                        _viewModel.selectedIndexFlow.value.let { idx ->
                             handleKeyboardButtonEvent(idx, buttonText)
                         }
                     }
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set the default selected cell to red text color
-        _viewModel.selectedIndexValue.value?.let { idx ->
+        _viewModel.selectedIndexFlow.value.let { idx ->
             _alphabetCellTextViews[idx]?.setTextColor(Color.RED)
         }
 
@@ -109,12 +109,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Observe the selected index
-        _viewModel.selectedIndexValue.observe(this) { i ->
+        _viewModel.selectedIndexFlow.launchAndCollectIn(this) { selectedIndex ->
             // Change the text colors of all the cells according to the selected index
-            _alphabetCellTextViews.forEachIndexed { j, textView ->
+            _alphabetCellTextViews.forEachIndexed { textViewIndex, textView ->
                 textView?.setTextColor(
                     // Change the selected cell's text color to red, other cells' text colors to white
-                    when (i == j) {
+                    when (selectedIndex == textViewIndex) {
                         true -> {
                             Color.RED
                         }
@@ -127,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set up color buttons and onClick actions to change cell color and update alphabet state
-        _binding.run {
+        binding.run {
             grayView.setOnClickListener {
                 onClickColorButton(R.color.gray)
             }
@@ -246,7 +246,7 @@ class MainActivity : AppCompatActivity() {
      * Handle event of clicking color buttons
      */
     private fun onClickColorButton(colorId: Int) {
-        _viewModel.selectedIndexValue.value?.let { idx ->
+        _viewModel.selectedIndexFlow.value.let { idx ->
             // Call different set function for different color code
             // Gray -> mismatch
             // Yellow -> misplaced
