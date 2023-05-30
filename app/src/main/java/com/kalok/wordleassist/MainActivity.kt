@@ -11,20 +11,20 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
-import androidx.lifecycle.ViewModelProvider
 import com.kalok.wordleassist.databinding.ActivityMainBinding
-import com.kalok.wordleassist.utilities.GuessRule
+import com.kalok.wordleassist.utilities.Constant
 import com.kalok.wordleassist.utilities.launchAndCollectIn
 import com.kalok.wordleassist.viewmodels.MainViewModel
 import com.kalok.wordleassist.views.AlphabetCellTextView
 import com.kalok.wordleassist.views.VocabDialogView
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.pow
 
-@AndroidEntryPoint
 @RequiresApi(Build.VERSION_CODES.M)
 class MainActivity : AppCompatActivity() {
-    private lateinit var _viewModel: MainViewModel
+    private val _viewModel: MainViewModel by viewModel()
     private lateinit var _alphabetCellTextViews: Array<AlphabetCellTextView?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,9 +35,6 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        // Get view model
-        _viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-
         // Organise alphabet table rows as an array
         val alphabetCellRows: Array<ConstraintLayout> = arrayOf(
             binding.tableRow1,
@@ -47,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             binding.tableRow5
         )
 
-        val numOfLetters = GuessRule.NUM_OF_LETTERS
+        val numOfLetters = Constant.NUM_OF_LETTERS
 
         // Organise AlphabetCellTextView as an array
         _alphabetCellTextViews = arrayOfNulls(numOfLetters.toDouble().pow(2).toInt())
@@ -111,18 +108,20 @@ class MainActivity : AppCompatActivity() {
         // Observe the selected index
         _viewModel.selectedIndexFlow.launchAndCollectIn(this) { selectedIndex ->
             // Change the text colors of all the cells according to the selected index
-            _alphabetCellTextViews.forEachIndexed { textViewIndex, textView ->
-                textView?.setTextColor(
-                    // Change the selected cell's text color to red, other cells' text colors to white
-                    when (selectedIndex == textViewIndex) {
-                        true -> {
-                            Color.RED
+            withContext(Dispatchers.Main) {
+                _alphabetCellTextViews.forEachIndexed { textViewIndex, textView ->
+                    textView?.setTextColor(
+                        // Change the selected cell's text color to red, other cells' text colors to white
+                        when (selectedIndex == textViewIndex) {
+                            true -> {
+                                Color.RED
+                            }
+                            false -> {
+                                Color.WHITE
+                            }
                         }
-                        false -> {
-                            Color.WHITE
-                        }
-                    }
-                )
+                    )
+                }
             }
         }
 

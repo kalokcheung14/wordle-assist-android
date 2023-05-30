@@ -2,15 +2,13 @@ package com.kalok.wordleassist.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.kalok.wordleassist.models.InputAlphabet
+import com.kalok.wordleassist.utilities.Constant.NUM_OF_LETTERS
 import com.kalok.wordleassist.utilities.GuessRule
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 import kotlin.math.pow
 
-@HiltViewModel
-class MainViewModel @Inject constructor(private val _guessRule: GuessRule) : ViewModel() {
+class MainViewModel(private val _guessRule: GuessRule) : ViewModel() {
     private val _selectedIndexFlow by lazy {
         MutableStateFlow(0)
     }
@@ -18,7 +16,7 @@ class MainViewModel @Inject constructor(private val _guessRule: GuessRule) : Vie
         _selectedIndexFlow.asStateFlow()
     }
 
-    private var _inputAlphabets: Array<InputAlphabet?> = arrayOfNulls(GuessRule.NUM_OF_LETTERS.toDouble().pow(2).toInt())
+    private var _inputAlphabets: Array<InputAlphabet?> = arrayOfNulls(NUM_OF_LETTERS.toDouble().pow(2).toInt())
 
     fun setSelectedIndex(index: Int) {
         _selectedIndexFlow.value = index
@@ -29,11 +27,10 @@ class MainViewModel @Inject constructor(private val _guessRule: GuessRule) : Vie
         _inputAlphabets.forEachIndexed { index, inputAlphabet ->
             inputAlphabet?.state?.let { state ->
                 inputAlphabet.alphabet?.let { alphabet ->
-                    val numOfLetters = GuessRule.NUM_OF_LETTERS
                     // Convert input to lower case for comparison
                     val lowerAlphabet = alphabet.lowercaseChar()
                     // Calculate the relative position of the alphabet
-                    val position = index - numOfLetters * (index / numOfLetters)
+                    val position = index - NUM_OF_LETTERS * (index / NUM_OF_LETTERS)
                     // Add alphabet to rule according to its state
                     when (state) {
                         InputAlphabet.MatchingState.MISPLACED -> _guessRule.addMisplacedAlphabet(position, lowerAlphabet)
@@ -89,7 +86,7 @@ class MainViewModel @Inject constructor(private val _guessRule: GuessRule) : Vie
 
     fun clearInput() {
         // Reset input alphabet array
-        _inputAlphabets = arrayOfNulls(GuessRule.NUM_OF_LETTERS.toDouble().pow(2).toInt())
+        _inputAlphabets = arrayOfNulls(NUM_OF_LETTERS.toDouble().pow(2).toInt())
         // Reset selected index value
         _selectedIndexFlow.value = 0
     }

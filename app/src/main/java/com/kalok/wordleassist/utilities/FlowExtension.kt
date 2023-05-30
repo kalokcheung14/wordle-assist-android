@@ -1,17 +1,19 @@
 package com.kalok.wordleassist.utilities
 
 import androidx.lifecycle.*
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-inline fun <reified T> StateFlow<T>.launchAndCollectIn(
+inline fun <T> Flow<T>.launchAndCollectIn(
     lifecycleOwner: LifecycleOwner,
-    crossinline collector: ((T) -> Unit)
+    state: Lifecycle.State = Lifecycle.State.STARTED,
+    crossinline block: suspend CoroutineScope.(data: T) -> Unit
 ) {
     lifecycleOwner.lifecycleScope.launch {
-        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-            collect {
-                collector.invoke(it)
+        lifecycleOwner.repeatOnLifecycle(state) {
+            this@launchAndCollectIn.collect {
+                block(it)
             }
         }
     }
