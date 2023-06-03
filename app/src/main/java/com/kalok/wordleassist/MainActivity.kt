@@ -147,8 +147,8 @@ class MainActivity : AppCompatActivity() {
                 if (vocabList.isNotEmpty()) {
                     // If the list is not empty, display the matched vocabs in a dialog
                     VocabDialogView(
-                        applicationContext,
-                        ArrayAdapter(applicationContext, R.layout.list_item, vocabList)
+                        this@MainActivity,
+                        ArrayAdapter(this@MainActivity, R.layout.list_item, vocabList)
                     ).show()
                 } else {
                     // If the list is empty, show a toast to the user

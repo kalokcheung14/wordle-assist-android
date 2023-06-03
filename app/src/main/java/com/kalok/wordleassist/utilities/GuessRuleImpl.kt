@@ -127,7 +127,9 @@ open class GuessRuleImpl(dictionaryDataSource: DictionaryDataSource): GuessRule 
     private fun initList() {
         // Initialise alphabets array and set
         _matchedAlphabetList = arrayOfNulls(NUM_OF_LETTERS)
-        _misplacedAlphabetList.fill(HashSet())
+        repeat(NUM_OF_LETTERS) {
+            _misplacedAlphabetList.add(HashSet())
+        }
         println("_misplacedAlphabetList ${_misplacedAlphabetList.size}")
     }
 
