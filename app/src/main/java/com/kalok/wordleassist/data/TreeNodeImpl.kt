@@ -27,4 +27,11 @@ class TreeNodeImpl<T>(override var value: T) : TreeNode<T> {
             it.value == value
         }
     }
+
+    override fun traverse(level: Int) {
+        println("TREE level $level: VALUE: $value")
+        children.forEach {
+            it.traverse(level + 1)
+        }
+    }
 }

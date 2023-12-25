@@ -6,4 +6,6 @@ interface TreeNode<T> {
     fun addChild(value: T): TreeNode<T>
     fun getChildrenSet(): Set<TreeNode<T>>
     fun findChild(value: T): TreeNode<T>?
+
+    fun traverse(level: Int = 0)
 }
