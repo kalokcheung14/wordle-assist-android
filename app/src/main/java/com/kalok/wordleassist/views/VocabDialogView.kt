@@ -7,17 +7,15 @@ import android.widget.ArrayAdapter
 import com.kalok.wordleassist.databinding.DialogVocabListBinding
 
 class VocabDialogView(parentContext: Context, private val _adapter: ArrayAdapter<String>) : AlertDialog(parentContext) {
-    private lateinit var _binding: DialogVocabListBinding
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        _binding = DialogVocabListBinding.inflate(layoutInflater)
-        val view = _binding.root
+        val binding = DialogVocabListBinding.inflate(layoutInflater)
+        val view = binding.root
         setContentView(view)
 
-        val vocabListView = _binding.vocabListview
-        val closeButton = _binding.closeDialogButton
+        val vocabListView = binding.vocabListview
+        val closeButton = binding.closeDialogButton
 
         closeButton.setOnClickListener {
             this.dismiss()

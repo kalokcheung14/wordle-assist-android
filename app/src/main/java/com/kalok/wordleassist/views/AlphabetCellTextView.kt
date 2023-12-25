@@ -16,10 +16,6 @@ class AlphabetCellTextView @JvmOverloads constructor(
     defStyleAttr: Int = 0,
 ): AppCompatTextView(context, attrs, defStyleAttr) {
     init {
-        applyTextStyle()
-    }
-
-    private fun applyTextStyle() {
         // Set up the style of an alphabet box
         gravity = Gravity.CENTER
         setTextColor(Color.WHITE)
@@ -28,6 +24,6 @@ class AlphabetCellTextView @JvmOverloads constructor(
         textSize = 30F
         setPadding(10)
         // Text for preview
-        text = context.getString(R.string.placeholder)
+        text = this.context.getString(R.string.placeholder)
     }
 }

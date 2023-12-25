@@ -11,43 +11,40 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
-import androidx.lifecycle.ViewModelProvider
 import com.kalok.wordleassist.databinding.ActivityMainBinding
-import com.kalok.wordleassist.utilities.GuessRule
+import com.kalok.wordleassist.utilities.Constant
+import com.kalok.wordleassist.utilities.launchAndCollectIn
 import com.kalok.wordleassist.viewmodels.MainViewModel
 import com.kalok.wordleassist.views.AlphabetCellTextView
 import com.kalok.wordleassist.views.VocabDialogView
-import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.pow
 
-@AndroidEntryPoint
 @RequiresApi(Build.VERSION_CODES.M)
 class MainActivity : AppCompatActivity() {
-    private lateinit var _viewModel: MainViewModel
-    private lateinit var _binding: ActivityMainBinding
+    private val _viewModel: MainViewModel by viewModel()
     private lateinit var _alphabetCellTextViews: Array<AlphabetCellTextView?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // View binding
-        _binding = ActivityMainBinding.inflate(layoutInflater)
-        val view = _binding.root
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
         setContentView(view)
-
-        // Get view model
-        _viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         // Organise alphabet table rows as an array
         val alphabetCellRows: Array<ConstraintLayout> = arrayOf(
-            _binding.tableRow1,
-            _binding.tableRow2,
-            _binding.tableRow3,
-            _binding.tableRow4,
-            _binding.tableRow5
+            binding.tableRow1,
+            binding.tableRow2,
+            binding.tableRow3,
+            binding.tableRow4,
+            binding.tableRow5
         )
 
-        val numOfLetters = GuessRule.NUM_OF_LETTERS
+        val numOfLetters = Constant.NUM_OF_LETTERS
 
         // Organise AlphabetCellTextView as an array
         _alphabetCellTextViews = arrayOfNulls(numOfLetters.toDouble().pow(2).toInt())
@@ -67,9 +64,9 @@ class MainActivity : AppCompatActivity() {
 
         // Organise linear layout as an array
         val keyboardLinearLayouts: Array<LinearLayout> = arrayOf(
-            _binding.keyboardRow1LinearLayout,
-            _binding.keyboardRow2LinearLayout,
-            _binding.keyboardRow3LinearLayout
+            binding.keyboardRow1LinearLayout,
+            binding.keyboardRow2LinearLayout,
+            binding.keyboardRow3LinearLayout
         )
 
         // Set up onClick listener for keyboard buttons
@@ -87,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                         val buttonText = button.text.toString()
 
                         // Get the value of current selected cell index
-                        _viewModel.selectedIndexValue.value?.let { idx ->
+                        _viewModel.selectedIndexFlow.value.let { idx ->
                             handleKeyboardButtonEvent(idx, buttonText)
                         }
                     }
@@ -96,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Set the default selected cell to red text color
-        _viewModel.selectedIndexValue.value?.let { idx ->
+        _viewModel.selectedIndexFlow.value.let { idx ->
             _alphabetCellTextViews[idx]?.setTextColor(Color.RED)
         }
 
@@ -109,70 +106,71 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Observe the selected index
-        _viewModel.selectedIndexValue.observe(this) { i ->
+        _viewModel.selectedIndexFlow.launchAndCollectIn(this) { selectedIndex ->
             // Change the text colors of all the cells according to the selected index
-            _alphabetCellTextViews.forEachIndexed { j, textView ->
-                textView?.setTextColor(
-                    // Change the selected cell's text color to red, other cells' text colors to white
-                    when (i == j) {
-                        true -> {
-                            Color.RED
+            withContext(Dispatchers.Main) {
+                _alphabetCellTextViews.forEachIndexed { textViewIndex, textView ->
+                    textView?.setTextColor(
+                        // Change the selected cell's text color to red, other cells' text colors to white
+                        when (selectedIndex == textViewIndex) {
+                            true -> {
+                                Color.RED
+                            }
+                            false -> {
+                                Color.WHITE
+                            }
                         }
-                        false -> {
-                            Color.WHITE
-                        }
-                    }
-                )
+                    )
+                }
             }
         }
 
         // Set up color buttons and onClick actions to change cell color and update alphabet state
-        val grayView = _binding.grayView
-        val yellowView = _binding.yellowView
-        val greenView = _binding.greenView
-
-        grayView.setOnClickListener {
-            onClickColorButton(R.color.gray)
-        }
-
-        yellowView.setOnClickListener {
-            onClickColorButton(R.color.yellow)
-        }
-
-        greenView.setOnClickListener {
-            onClickColorButton(R.color.green)
-        }
-
-        // Set up on click event handling when guess button is clicked
-        val guessButton = _binding.guessButton
-        guessButton.setOnClickListener {
-            // Get the result list of guessing from viewModel
-            val vocabList = _viewModel.guess()
-
-            if (vocabList.isNotEmpty()) {
-                // If the list is not empty, display the matched vocabs in a dialog
-                val adapter = ArrayAdapter(applicationContext, R.layout.list_item, vocabList)
-                val dialog = VocabDialogView(this, adapter)
-                dialog.show()
-            } else {
-                // If the list is empty, show a toast to the user
-                Toast.makeText(
-                    applicationContext,
-                    getString(R.string.no_match),
-                    Toast.LENGTH_SHORT
-                ).show()
+        binding.run {
+            grayView.setOnClickListener {
+                onClickColorButton(R.color.gray)
             }
-        }
 
-        // Set up on click event handling when clear button is clicked
-        val clearButton = _binding.clearButton
-        clearButton.setOnClickListener {
-            // Clear alphabet input
-            _viewModel.clearInput()
-            // Reset alphabet and color for each cell
-            _alphabetCellTextViews.forEachIndexed { i, _ ->
-                _alphabetCellTextViews[i]?.text = getString(R.string.placeholder)
-                _alphabetCellTextViews[i]?.setBackgroundColor(getColor(R.color.gray))
+            yellowView.setOnClickListener {
+                onClickColorButton(R.color.yellow)
+            }
+
+            greenView.setOnClickListener {
+                onClickColorButton(R.color.green)
+            }
+
+            // Set up on click event handling when guess button is clicked
+            guessButton.setOnClickListener {
+                // Get the result list of guessing from viewModel
+                val vocabList = _viewModel.guess()
+
+                if (vocabList.isNotEmpty()) {
+                    // If the list is not empty, display the matched vocabs in a dialog
+                    VocabDialogView(
+                        this@MainActivity,
+                        ArrayAdapter(this@MainActivity, R.layout.list_item, vocabList)
+                    ).show()
+                } else {
+                    // If the list is empty, show a toast to the user
+                    Toast.makeText(
+                        applicationContext,
+                        getString(R.string.no_match),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            // Set up on click event handling when clear button is clicked
+            clearButton.setOnClickListener {
+                // Clear alphabet input
+                _viewModel.clearInput()
+                // Reset alphabet and color for each cell
+                _alphabetCellTextViews.forEach { view ->
+                    view?.apply {
+                        text = getString(R.string.placeholder)
+                        setBackgroundColor(getColor(R.color.gray))
+                    }
+                }
             }
         }
     }
@@ -208,13 +206,15 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.last) -> {
                 // If selected button is last,
                 // set the selected index to the last index (if has last index)
-                if (idx > 0) {
-                    // Select last cell
-                    _viewModel.setSelectedIndex(idx - 1)
-                } else {
-                    // Go back to the last cell
-                    _viewModel.setSelectedIndex(_alphabetCellTextViews.size - 1)
-                }
+                _viewModel.setSelectedIndex(
+                    if (idx > 0) {
+                        // Select last cell
+                        idx - 1
+                    } else {
+                        // Go back to the last cell
+                        _alphabetCellTextViews.size - 1
+                    }
+                )
             }
             else -> {
                 // Otherwise, set the alphabet at index to the alphabet on the button
@@ -230,20 +230,22 @@ class MainActivity : AppCompatActivity() {
      * Function to select next cell in the table
      */
     private fun selectNextCell(idx: Int) {
-        if (idx < _alphabetCellTextViews.size - 1) {
-            // Select next cell
-            _viewModel.setSelectedIndex(idx + 1)
-        } else {
-            // Go back to the first cell
-            _viewModel.setSelectedIndex(0)
-        }
+        _viewModel.setSelectedIndex(
+            if (idx < _alphabetCellTextViews.size - 1) {
+                // Select next cell
+                idx + 1
+            } else {
+                // Go back to the first cell
+                0
+            }
+        )
     }
 
     /**
      * Handle event of clicking color buttons
      */
     private fun onClickColorButton(colorId: Int) {
-        _viewModel.selectedIndexValue.value?.let { idx ->
+        _viewModel.selectedIndexFlow.value.let { idx ->
             // Call different set function for different color code
             // Gray -> mismatch
             // Yellow -> misplaced
