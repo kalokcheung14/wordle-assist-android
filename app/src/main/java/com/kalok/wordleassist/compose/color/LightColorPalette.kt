@@ -7,6 +7,8 @@ object LightColorPalette: ColorPalette {
         get() = Black
     override val ColorSecondary: Color
         get() = Gray
+    override val ColorSecondaryVariant: Color
+        get() = Keyboard
     override val ColorBackground: Color
         get() = White
     override val ColorSurface: Color
@@ -16,11 +18,11 @@ object LightColorPalette: ColorPalette {
     override val ColorOnError: Color
         get() = Error
     override val ColorOnPrimary: Color
-        get() = Black
+        get() = White
     override val ColorOnSecondary: Color
-        get() = Gray
+        get() = White
     override val ColorOnSurface: Color
-        get() = White
+        get() = Black
     override val ColorOnBackground: Color
-        get() = White
+        get() = Black
 }

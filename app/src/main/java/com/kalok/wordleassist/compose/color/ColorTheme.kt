@@ -5,19 +5,14 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = getColor("#FFBB86FC")
-val Purple500 = getColor("#FF6200EE")
-val Purple700 = getColor("#FF3700B3")
-val Teal200 = getColor("#FF03DAC5")
-val Teal700 = getColor("#FF018786")
 val Black = getColor("#FF000000")
 val White = getColor("#FFFFFFFF")
-val Blue = getColor("#2196F3")
 val Error = getColor("#C5281C")
 val Gray = getColor("#818384")
 val Yellow = getColor("#b59f3b")
 val Green = getColor("#538d4e")
 val Keyboard = getColor("#2691E6")
+val KeyboardDark = getColor("#353538")
 val NightThemeBlack = getColor("#1C1C1E")
 
 fun getColor(colorString: String): Color {
@@ -33,6 +28,7 @@ fun getColors(
         lightColors(
             primary = colorPalette.ColorPrimary,
             secondary = colorPalette.ColorSecondary,
+            secondaryVariant = colorPalette.ColorSecondaryVariant,
             background = colorPalette.ColorBackground,
             error = colorPalette.ColorError,
             surface = colorPalette.ColorSurface,
@@ -46,6 +42,7 @@ fun getColors(
         darkColors(
             primary = colorPalette.ColorPrimary,
             secondary = colorPalette.ColorSecondary,
+            secondaryVariant = colorPalette.ColorSecondaryVariant,
             background = colorPalette.ColorBackground,
             error = colorPalette.ColorError,
             surface = colorPalette.ColorSurface,

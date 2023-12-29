@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.Color
 interface ColorPalette {
     val ColorPrimary: Color
     val ColorSecondary: Color
+    val ColorSecondaryVariant: Color
     val ColorBackground: Color
     val ColorSurface: Color
     val ColorError: Color
