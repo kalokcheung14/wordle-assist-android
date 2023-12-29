@@ -11,4 +11,5 @@ data class BasicDimension (
     override val buttonElevationPressed: Dp = 2.dp,
     override val topBarMargin: Dp = 16.dp,
     override val topBarVerticalMargin: Dp = 4.dp,
+    override val keyboardBottomPadding: Dp = 8.dp,
 ): DimensionInterface

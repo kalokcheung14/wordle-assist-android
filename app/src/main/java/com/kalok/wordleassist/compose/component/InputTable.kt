@@ -2,6 +2,7 @@ package com.kalok.wordleassist.compose.component
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,7 +16,11 @@ fun InputTable(
         modifier = modifier
     ) {
         repeat(5) {
-            Row {
+            Row(
+                modifier = Modifier
+                    .weight(1f)
+                    .wrapContentHeight()
+            ) {
                 repeat(5) {
                     AlphabetCell()
                 }

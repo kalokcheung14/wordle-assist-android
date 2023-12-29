@@ -1,6 +1,7 @@
 package com.kalok.wordleassist.compose.component
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.Composable
@@ -24,7 +25,7 @@ fun ColorButton(
             defaultElevation = LocalDimensions.current.buttonElevationDefault,
             pressedElevation = LocalDimensions.current.buttonElevationPressed,
         ),
-        modifier = modifier,
+        modifier = modifier.fillMaxHeight(),
         colors = ButtonDefaults.buttonColors(color)
     ) {
 
@@ -37,8 +38,6 @@ fun ColorButtonPreview() {
     WordleAssistTheme {
         Column {
             ColorButton(color = Yellow)
-            ColorButton(color = Green)
-            ColorButton(color = Gray)
         }
     }
 }

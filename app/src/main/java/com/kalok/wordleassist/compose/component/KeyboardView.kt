@@ -51,6 +51,7 @@ fun KeyboardView(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = LocalDimensions.current.keyboardKeyMargin)
+                .padding(bottom = LocalDimensions.current.keyboardBottomPadding)
         ) {
             ColorButton(
                 color = Gray,

@@ -22,7 +22,7 @@ fun MainScreen() {
                     .shadow(
                         elevation = 8.dp,
                         spotColor = MaterialTheme.colors.primary
-                    ),
+                    ).statusBarsPadding(),
             ) {
                 Text(
                     text = stringResource(id = R.string.app_name),
@@ -43,16 +43,22 @@ fun MainScreen() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
+                .navigationBarsPadding()
         ) {
+            Spacer(modifier = Modifier.weight(1f))
             InputTable(
                 modifier = Modifier
-                    .padding(10.dp, 100.dp, 10.dp, 0.dp)
+                    .padding(10.dp, 0.dp, 10.dp, 0.dp)
+                    .wrapContentHeight()
                     .align(Alignment.CenterHorizontally)
+                    .weight(5f)
             )
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .wrapContentHeight()
                     .padding(start = 40.dp, end = 40.dp)
+                    .weight(1f)
             ) {
                 Button(
                     onClick = { /*TODO*/ },
@@ -83,7 +89,9 @@ fun MainScreen() {
                 }
             }
             Spacer(modifier = Modifier.weight(1f))
-            KeyboardView()
+            KeyboardView(
+                modifier = Modifier.weight(3.5f)
+            )
         }
     }
 }

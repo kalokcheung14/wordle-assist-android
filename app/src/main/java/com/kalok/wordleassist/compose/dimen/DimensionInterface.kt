@@ -10,4 +10,5 @@ interface DimensionInterface {
     val buttonElevationPressed: Dp
     val topBarMargin: Dp
     val topBarVerticalMargin: Dp
+    val keyboardBottomPadding: Dp
 }
