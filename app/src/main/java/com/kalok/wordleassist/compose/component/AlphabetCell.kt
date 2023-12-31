@@ -1,6 +1,7 @@
 package com.kalok.wordleassist.compose.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -19,26 +20,25 @@ import com.kalok.wordleassist.compose.LocalColors
 fun AlphabetCell(
     modifier: Modifier = Modifier,
     index: Int = -1,
+    isSelected: Boolean = false,
 ) {
     Box(
-        modifier = Modifier
-            .background(MaterialTheme.colors.background)
-            .padding(LocalDimensions.current.cellMargin)
+        modifier = modifier
+            .background(LocalColors.current.ColorAlphabetCell)
+            .height(LocalDimensions.current.cellSize)
+            .aspectRatio(1f),
+        contentAlignment = Alignment.Center,
     ) {
-        Box(
-            modifier = modifier
-                .background(LocalColors.current.ColorAlphabetCell)
-                .height(LocalDimensions.current.cellSize)
-                .aspectRatio(1f),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                modifier = Modifier.wrapContentSize(),
-                text = stringResource(id = R.string.placeholder),
-                color = LocalColors.current.ColorAlphabetCellText,
-                style = LocalTypography.current.cell,
-            )
-        }
+        Text(
+            modifier = Modifier.wrapContentSize(),
+            text = stringResource(id = R.string.placeholder),
+            color = if (isSelected) {
+                LocalColors.current.ColorAlphabetCellTextSelected
+            } else {
+                LocalColors.current.ColorAlphabetCellText
+                                            },
+            style = LocalTypography.current.cell,
+        )
     }
 }
 
@@ -47,5 +47,13 @@ fun AlphabetCell(
 fun AlphabetCellPreview() {
     WordleAssistTheme {
         AlphabetCell()
+    }
+}
+
+@Composable
+@Preview
+fun AlphabetCellSelectedPreview() {
+    WordleAssistTheme {
+        AlphabetCell(isSelected = true)
     }
 }

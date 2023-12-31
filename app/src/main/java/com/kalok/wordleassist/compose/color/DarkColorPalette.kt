@@ -14,9 +14,9 @@ object DarkColorPalette: ColorPalette {
     override val ColorSurface: Color
         get() = Black
     override val ColorError: Color
-        get() = Error
+        get() = Red
     override val ColorOnError: Color
-        get() = Error
+        get() = Red
     override val ColorOnPrimary: Color
         get() = Black
     override val ColorOnSecondary: Color

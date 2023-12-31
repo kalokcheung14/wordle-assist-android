@@ -7,4 +7,5 @@ data class BasicCustomColor(
     override val ColorGuessButton: Color = Green,
     override val ColorAlphabetCellText: Color = White,
     override val ColorAlphabetCell: Color = Gray,
+    override val ColorAlphabetCellTextSelected: Color = Red,
 ): CustomColorInterface

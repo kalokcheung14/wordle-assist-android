@@ -13,10 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import com.kalok.wordleassist.compose.MatchCondition
 import com.kalok.wordleassist.compose.WordleAssistTheme
 import com.kalok.wordleassist.compose.component.MainScreen
+import com.kalok.wordleassist.viewmodels.MainViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ComposeActivity : ComponentActivity() {
+    private val _viewModel: MainViewModel by viewModel()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
@@ -29,7 +34,13 @@ class ComposeActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background,
                 ) {
-                    MainScreen()
+                    MainScreen(viewModel = _viewModel, onEvent = { event ->
+                        when (event) {
+                            is WordleEvent.AlphabetCellClicked -> {
+                                _viewModel.setSelectedIndex(event.index)
+                            }
+                        }
+                    })
                 }
             }
         }
@@ -60,6 +71,25 @@ class ComposeActivity : ComponentActivity() {
                     ),
                 )
             }
+        }
+    }
+
+    /**
+     * Handle event of clicking color buttons
+     */
+    private fun onClickColorButton(colorId: Int, matchCondition: MatchCondition) {
+        _viewModel.selectedIndexFlow.value.let { idx ->
+            // Call different set function for different color code
+            // Gray -> mismatch
+            // Yellow -> misplaced
+            // Green -> match
+            when(colorId) {
+                R.color.gray -> _viewModel.setMismatchStateAt(idx)
+                R.color.yellow -> _viewModel.setMisplacedStateAt(idx)
+                R.color.green -> _viewModel.setMatchStateAt(idx)
+            }
+
+            // Change the background color of the selected cell
         }
     }
 }

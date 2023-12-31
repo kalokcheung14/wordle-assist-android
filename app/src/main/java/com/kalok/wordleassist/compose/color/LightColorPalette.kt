@@ -14,9 +14,9 @@ object LightColorPalette: ColorPalette {
     override val ColorSurface: Color
         get() = White
     override val ColorError: Color
-        get() = Error
+        get() = Red
     override val ColorOnError: Color
-        get() = Error
+        get() = Red
     override val ColorOnPrimary: Color
         get() = White
     override val ColorOnSecondary: Color

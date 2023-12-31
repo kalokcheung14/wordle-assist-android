@@ -6,5 +6,6 @@ interface CustomColorInterface {
     val ColorClearButton: Color
     val ColorGuessButton: Color
     val ColorAlphabetCellText: Color
+    val ColorAlphabetCellTextSelected: Color
     val ColorAlphabetCell: Color
 }

@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.kalok.wordleassist.compose.LocalDimensions
+import com.kalok.wordleassist.compose.MatchCondition
 import com.kalok.wordleassist.compose.WordleAssistTheme
 import com.kalok.wordleassist.compose.color.Gray
 import com.kalok.wordleassist.compose.color.Green
@@ -55,12 +56,14 @@ fun KeyboardView(
         ) {
             ColorButton(
                 color = Gray,
+                matchCondition = MatchCondition.MISMATCHED,
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = LocalDimensions.current.keyboardKeyMargin)
             )
             ColorButton(
                 color = Yellow,
+                matchCondition = MatchCondition.MISPLACED,
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = LocalDimensions.current.keyboardKeyMargin)
@@ -68,6 +71,7 @@ fun KeyboardView(
             )
             ColorButton(
                 color = Green,
+                matchCondition = MatchCondition.MATCHED,
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = LocalDimensions.current.keyboardKeyMargin)

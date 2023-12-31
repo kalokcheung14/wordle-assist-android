@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 
 val Black = getColor("#FF000000")
 val White = getColor("#FFFFFFFF")
-val Error = getColor("#C5281C")
+val Red = getColor("#C5281C")
 val Gray = getColor("#818384")
 val Yellow = getColor("#b59f3b")
 val Green = getColor("#538d4e")

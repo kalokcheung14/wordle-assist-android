@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.kalok.wordleassist.compose.LocalDimensions
+import com.kalok.wordleassist.compose.MatchCondition
 import com.kalok.wordleassist.compose.WordleAssistTheme
 import com.kalok.wordleassist.compose.color.Gray
 import com.kalok.wordleassist.compose.color.Green
@@ -18,6 +19,7 @@ import com.kalok.wordleassist.compose.color.Yellow
 fun ColorButton(
     modifier: Modifier = Modifier,
     color: Color,
+    matchCondition: MatchCondition,
 ) {
     Button(
         onClick = { /*TODO*/ },
@@ -37,7 +39,10 @@ fun ColorButton(
 fun ColorButtonPreview() {
     WordleAssistTheme {
         Column {
-            ColorButton(color = Yellow)
+            ColorButton(
+                color = Yellow,
+                matchCondition = MatchCondition.MISMATCHED
+            )
         }
     }
 }
