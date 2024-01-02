@@ -1,8 +1,8 @@
 package com.kalok.wordleassist.models
 
-class InputAlphabet(
-        var alphabet: Char?,
-        var state: MatchingState = MatchingState.MISMATCH
+data class InputAlphabet(
+        val alphabet: Char?,
+        val state: MatchingState = MatchingState.MISMATCH
     ) {
     // States of matching alphabets
     enum class MatchingState {

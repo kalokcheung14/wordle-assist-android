@@ -2,8 +2,7 @@ package com.kalok.wordleassist.compose.component
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -17,10 +16,10 @@ import com.kalok.wordleassist.viewmodels.MainViewModel
 
 @Composable
 fun MainScreen(
-    viewModel: MainViewModel? = null,
+    viewModel: MainViewModel,
     onEvent: (WordleEvent) -> Unit = {},
 ) {
-    val selectedIndex = viewModel?.selectedIndexFlow?.collectAsState()
+    val selectedIndex = viewModel.selectedIndexFlow.collectAsState()
 
     Scaffold(
         topBar = {
@@ -61,8 +60,9 @@ fun MainScreen(
                     .wrapContentHeight()
                     .align(Alignment.CenterHorizontally)
                     .weight(5f),
-                selectedIndex = selectedIndex?.value ?: 0,
-                onEvent = onEvent
+                selectedIndex = selectedIndex.value,
+                onEvent = onEvent,
+                inputAlphabets = viewModel.inputAlphabets
             )
             Row(
                 modifier = Modifier
@@ -101,24 +101,9 @@ fun MainScreen(
             }
             Spacer(modifier = Modifier.weight(1f))
             KeyboardView(
-                modifier = Modifier.weight(3.5f)
+                modifier = Modifier.weight(3.5f),
+                onEvent = onEvent
             )
         }
-    }
-}
-
-@Composable
-@Preview
-fun MainScreenPreview() {
-    WordleAssistTheme {
-        MainScreen()
-    }
-}
-
-@Composable
-@Preview
-fun MainScreenDarkPreview() {
-    WordleAssistTheme(isDarkTheme = true) {
-        MainScreen()
     }
 }

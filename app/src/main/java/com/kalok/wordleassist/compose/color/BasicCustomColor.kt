@@ -8,4 +8,6 @@ data class BasicCustomColor(
     override val ColorAlphabetCellText: Color = White,
     override val ColorAlphabetCell: Color = Gray,
     override val ColorAlphabetCellTextSelected: Color = Red,
+    override val ColorMatchedCell: Color = Green,
+    override val ColorMisplacedCell: Color = Yellow,
 ): CustomColorInterface

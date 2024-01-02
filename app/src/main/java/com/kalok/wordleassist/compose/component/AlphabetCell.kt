@@ -11,20 +11,31 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kalok.wordleassist.R
-import com.kalok.wordleassist.compose.LocalDimensions
-import com.kalok.wordleassist.compose.LocalTypography
-import com.kalok.wordleassist.compose.WordleAssistTheme
-import com.kalok.wordleassist.compose.LocalColors
+import com.kalok.wordleassist.compose.*
+import com.kalok.wordleassist.models.InputAlphabet
 
 @Composable
 fun AlphabetCell(
     modifier: Modifier = Modifier,
     index: Int = -1,
     isSelected: Boolean = false,
+    matchingState: InputAlphabet.MatchingState = InputAlphabet.MatchingState.MISMATCH,
 ) {
     Box(
         modifier = modifier
-            .background(LocalColors.current.ColorAlphabetCell)
+            .background(
+                when (matchingState) {
+                    InputAlphabet.MatchingState.MISMATCH -> {
+                        LocalColors.current.ColorAlphabetCell
+                    }
+                    InputAlphabet.MatchingState.MISPLACED -> {
+                        LocalColors.current.ColorMisplacedCell
+                    }
+                    InputAlphabet.MatchingState.MATCH -> {
+                        LocalColors.current.ColorMatchedCell
+                    }
+                }
+            )
             .height(LocalDimensions.current.cellSize)
             .aspectRatio(1f),
         contentAlignment = Alignment.Center,

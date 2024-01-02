@@ -8,4 +8,6 @@ interface CustomColorInterface {
     val ColorAlphabetCellText: Color
     val ColorAlphabetCellTextSelected: Color
     val ColorAlphabetCell: Color
+    val ColorMatchedCell: Color
+    val ColorMisplacedCell: Color
 }

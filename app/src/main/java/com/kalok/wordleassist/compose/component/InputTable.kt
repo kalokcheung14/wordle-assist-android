@@ -1,7 +1,6 @@
 package com.kalok.wordleassist.compose.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -11,14 +10,17 @@ import com.kalok.wordleassist.WordleEvent
 import com.kalok.wordleassist.compose.LocalDimensions
 import com.kalok.wordleassist.compose.WordleAssistTheme
 import com.kalok.wordleassist.compose.clickableWithoutRipple
+import com.kalok.wordleassist.models.InputAlphabet
+import com.kalok.wordleassist.utilities.Constant
 
 @Composable
 fun InputTable(
     modifier: Modifier = Modifier,
     selectedIndex: Int = 0,
+    inputAlphabets: Map<Int, InputAlphabet?> = emptyMap(),
     onEvent: (WordleEvent) -> Unit = {},
 ) {
-    val wordLength = 5
+    val wordLength = Constant.NUM_OF_LETTERS
 
     Column(
         modifier = modifier
@@ -31,6 +33,8 @@ fun InputTable(
             ) {
                 repeat(wordLength) { column ->
                     val cellIndex = row * wordLength + column
+                    val alphabet = inputAlphabets[cellIndex]
+
                     Box(
                         modifier = Modifier
                             .background(MaterialTheme.colors.background)
@@ -41,7 +45,8 @@ fun InputTable(
                             isSelected = (cellIndex == selectedIndex),
                             modifier = Modifier.clickableWithoutRipple {
                                 onEvent(WordleEvent.AlphabetCellClicked(cellIndex))
-                            }
+                            },
+                            matchingState = alphabet?.state ?: InputAlphabet.MatchingState.MISMATCH
                         )
                     }
                 }

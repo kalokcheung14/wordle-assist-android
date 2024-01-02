@@ -13,10 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
-import com.kalok.wordleassist.compose.MatchCondition
+import androidx.lifecycle.lifecycleScope
 import com.kalok.wordleassist.compose.WordleAssistTheme
 import com.kalok.wordleassist.compose.component.MainScreen
+import com.kalok.wordleassist.models.InputAlphabet
 import com.kalok.wordleassist.viewmodels.MainViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ComposeActivity : ComponentActivity() {
@@ -38,6 +40,9 @@ class ComposeActivity : ComponentActivity() {
                         when (event) {
                             is WordleEvent.AlphabetCellClicked -> {
                                 _viewModel.setSelectedIndex(event.index)
+                            }
+                            is WordleEvent.MatchingStateButtonClicked -> {
+                                onClickColorButton(event.matchState)
                             }
                         }
                     })
@@ -77,19 +82,19 @@ class ComposeActivity : ComponentActivity() {
     /**
      * Handle event of clicking color buttons
      */
-    private fun onClickColorButton(colorId: Int, matchCondition: MatchCondition) {
-        _viewModel.selectedIndexFlow.value.let { idx ->
-            // Call different set function for different color code
-            // Gray -> mismatch
-            // Yellow -> misplaced
-            // Green -> match
-            when(colorId) {
-                R.color.gray -> _viewModel.setMismatchStateAt(idx)
-                R.color.yellow -> _viewModel.setMisplacedStateAt(idx)
-                R.color.green -> _viewModel.setMatchStateAt(idx)
+    private fun onClickColorButton(matchingState: InputAlphabet.MatchingState) {
+        _viewModel.selectedIndexFlow.value.let { selectedIndex ->
+            when(matchingState) {
+                InputAlphabet.MatchingState.MISMATCH -> {
+                    _viewModel.setMismatchStateAt(selectedIndex)
+                }
+                InputAlphabet.MatchingState.MISPLACED -> {
+                    _viewModel.setMisplacedStateAt(selectedIndex)
+                }
+                InputAlphabet.MatchingState.MATCH -> {
+                    _viewModel.setMatchStateAt(selectedIndex)
+                }
             }
-
-            // Change the background color of the selected cell
         }
     }
 }

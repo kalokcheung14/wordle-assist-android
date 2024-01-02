@@ -9,16 +9,16 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.kalok.wordleassist.WordleEvent
+import com.kalok.wordleassist.compose.LocalColors
 import com.kalok.wordleassist.compose.LocalDimensions
-import com.kalok.wordleassist.compose.MatchCondition
 import com.kalok.wordleassist.compose.WordleAssistTheme
-import com.kalok.wordleassist.compose.color.Gray
-import com.kalok.wordleassist.compose.color.Green
-import com.kalok.wordleassist.compose.color.Yellow
+import com.kalok.wordleassist.models.InputAlphabet
 
 @Composable
 fun KeyboardView(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onEvent: (WordleEvent) -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -55,26 +55,34 @@ fun KeyboardView(
                 .padding(bottom = LocalDimensions.current.keyboardBottomPadding)
         ) {
             ColorButton(
-                color = Gray,
-                matchCondition = MatchCondition.MISMATCHED,
+                color = LocalColors.current.ColorAlphabetCell,
+                matchingState = InputAlphabet.MatchingState.MISMATCH,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = LocalDimensions.current.keyboardKeyMargin)
+                    .padding(horizontal = LocalDimensions.current.keyboardKeyMargin),
+                onClick = {
+                    onEvent(WordleEvent.MatchingStateButtonClicked(InputAlphabet.MatchingState.MISMATCH))
+                }
             )
             ColorButton(
-                color = Yellow,
-                matchCondition = MatchCondition.MISPLACED,
+                color = LocalColors.current.ColorMisplacedCell,
+                matchingState = InputAlphabet.MatchingState.MISPLACED,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = LocalDimensions.current.keyboardKeyMargin)
-
+                    .padding(horizontal = LocalDimensions.current.keyboardKeyMargin),
+                onClick = {
+                    onEvent(WordleEvent.MatchingStateButtonClicked(InputAlphabet.MatchingState.MISPLACED))
+                }
             )
             ColorButton(
-                color = Green,
-                matchCondition = MatchCondition.MATCHED,
+                color = LocalColors.current.ColorMatchedCell,
+                matchingState = InputAlphabet.MatchingState.MATCH,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(horizontal = LocalDimensions.current.keyboardKeyMargin)
+                    .padding(horizontal = LocalDimensions.current.keyboardKeyMargin),
+                onClick = {
+                    onEvent(WordleEvent.MatchingStateButtonClicked(InputAlphabet.MatchingState.MATCH))
+                }
             )
         }
     }
