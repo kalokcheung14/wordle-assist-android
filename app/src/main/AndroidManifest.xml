@@ -13,7 +13,6 @@
         <activity
             android:name=".ComposeActivity"
             android:exported="true"
-            android:label="@string/title_activity_compose"
             android:theme="@style/Theme.WordleAssist">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
