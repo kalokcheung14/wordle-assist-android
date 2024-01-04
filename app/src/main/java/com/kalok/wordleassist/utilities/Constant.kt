@@ -1,8 +1,9 @@
 package com.kalok.wordleassist.utilities
 
 object Constant {
+    const val LOG_TAG = "WordleLog"
     const val NUM_OF_LETTERS = 5
-    const val MAX_NUM_OF_GUESS = 6
+    const val MAX_NUM_OF_GUESS = 5
 
     const val FUNC_DELETE = "DEL"
     const val FUNC_LAST = "LAST"

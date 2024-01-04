@@ -38,13 +38,13 @@ class ComposeActivity : ComponentActivity() {
                 ) {
                     MainScreen(viewModel = _viewModel, onEvent = { event ->
                         when (event) {
-                            is WordleEvent.AlphabetCellClicked -> {
+                            is WordleEvent.SelectAlphabetEvent -> {
                                 _viewModel.setSelectedIndex(event.index)
                             }
-                            is WordleEvent.MatchingStateButtonClicked -> {
+                            is WordleEvent.MatchingStateUpdateEvent -> {
                                 onClickColorButton(event.matchState)
                             }
-                            is WordleEvent.KeyboardKeyClicked -> {
+                            is WordleEvent.InputEvent -> {
                                 val selectedIndex = _viewModel.selectedIndexFlow.value
                                 when (event.keyType) {
                                     KeyType.FUNCTION -> {
@@ -76,7 +76,7 @@ class ComposeActivity : ComponentActivity() {
                                     }
                                 }
                             }
-                            is WordleEvent.ClearButtonClicked -> {
+                            is WordleEvent.ClearEvent -> {
                                 _viewModel.clearInput()
                             }
                         }

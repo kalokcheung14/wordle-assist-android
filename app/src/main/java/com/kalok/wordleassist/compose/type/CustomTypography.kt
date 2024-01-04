@@ -27,5 +27,9 @@ data class CustomTypography(
     override val topBarText: TextStyle = TextStyle(
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
+    ),
+    override val resultTitleText: TextStyle = TextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
     )
 ): TypographyInterface

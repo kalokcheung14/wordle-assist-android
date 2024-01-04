@@ -11,4 +11,10 @@ interface DimensionInterface {
     val topBarMargin: Dp
     val topBarVerticalMargin: Dp
     val keyboardBottomPadding: Dp
+    val resultWordPadding: Dp
+    val resultWordSidePadding: Dp
+    val dialogCornerShape: Dp
+    val dialogPadding: Dp
+    val dialogIconSize: Dp
+    val dialogNoResultPadding: Dp
 }

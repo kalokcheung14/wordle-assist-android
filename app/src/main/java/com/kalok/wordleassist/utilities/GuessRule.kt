@@ -43,7 +43,7 @@ abstract class GuessRule(dictionaryDataSource: DictionaryDataSource) {
         charSet.add(character)
         misplacedAlphabetList[position] = charSet
     }
-    fun showGuessList(): ArrayList<String> {
+    fun showGuessList(): List<String> {
         // Remove unused alphabets from the alphabet list
         alphabetList.removeAll(mismatchAlphabetList)
 
@@ -58,5 +58,5 @@ abstract class GuessRule(dictionaryDataSource: DictionaryDataSource) {
         initList()
     }
 
-    protected abstract fun guess(): ArrayList<String>
+    protected abstract fun guess(): List<String>
 }

@@ -45,7 +45,7 @@ fun InputTable(
                             index = cellIndex,
                             isSelected = (cellIndex == selectedIndex),
                             modifier = Modifier.clickableWithoutRipple {
-                                onEvent(WordleEvent.AlphabetCellClicked(cellIndex))
+                                onEvent(WordleEvent.SelectAlphabetEvent(cellIndex))
                             },
                             alphabet = alphabet
                         )

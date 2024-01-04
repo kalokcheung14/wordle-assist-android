@@ -42,7 +42,7 @@ fun KeyboardView(
                                 horizontal = LocalDimensions.current.keyboardKeyMargin
                             ),
                         onClick = { key, keyType ->
-                            onEvent(WordleEvent.KeyboardKeyClicked(key, keyType))
+                            onEvent(WordleEvent.InputEvent(key, keyType))
                         }
                     )
                 }
@@ -61,7 +61,7 @@ fun KeyboardView(
                     .weight(1f)
                     .padding(horizontal = LocalDimensions.current.keyboardKeyMargin),
                 onClick = {
-                    onEvent(WordleEvent.MatchingStateButtonClicked(InputAlphabet.MatchingState.MISMATCH))
+                    onEvent(WordleEvent.MatchingStateUpdateEvent(InputAlphabet.MatchingState.MISMATCH))
                 }
             )
             ColorButton(
@@ -71,7 +71,7 @@ fun KeyboardView(
                     .weight(1f)
                     .padding(horizontal = LocalDimensions.current.keyboardKeyMargin),
                 onClick = {
-                    onEvent(WordleEvent.MatchingStateButtonClicked(InputAlphabet.MatchingState.MISPLACED))
+                    onEvent(WordleEvent.MatchingStateUpdateEvent(InputAlphabet.MatchingState.MISPLACED))
                 }
             )
             ColorButton(
@@ -81,7 +81,7 @@ fun KeyboardView(
                     .weight(1f)
                     .padding(horizontal = LocalDimensions.current.keyboardKeyMargin),
                 onClick = {
-                    onEvent(WordleEvent.MatchingStateButtonClicked(InputAlphabet.MatchingState.MATCH))
+                    onEvent(WordleEvent.MatchingStateUpdateEvent(InputAlphabet.MatchingState.MATCH))
                 }
             )
         }

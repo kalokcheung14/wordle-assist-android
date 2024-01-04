@@ -7,7 +7,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kalok.wordleassist.R
 import com.kalok.wordleassist.WordleEvent
@@ -20,6 +19,8 @@ fun MainScreen(
     onEvent: (WordleEvent) -> Unit = {},
 ) {
     val selectedIndex = viewModel.selectedIndexFlow.collectAsState()
+    var showResult by remember { mutableStateOf(false) }
+    var resultList = remember { mutableStateListOf<String>() }
 
     Scaffold(
         topBar = {
@@ -72,7 +73,7 @@ fun MainScreen(
                     .weight(1f)
             ) {
                 Button(
-                    onClick = { onEvent(WordleEvent.ClearButtonClicked) },
+                    onClick = { onEvent(WordleEvent.ClearEvent) },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = LocalColors.current.ColorClearButton
                     )
@@ -86,7 +87,12 @@ fun MainScreen(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        resultList = viewModel.guess().map { word ->
+                            word.uppercase()
+                        }.toMutableStateList()
+                        showResult = true
+                    },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = LocalColors.current.ColorGuessButton
                     )
@@ -103,6 +109,12 @@ fun MainScreen(
             KeyboardView(
                 modifier = Modifier.weight(3.5f),
                 onEvent = onEvent
+            )
+        }
+        if (showResult) {
+            ResultDialog(
+                onDismiss = { showResult = false },
+                guess = resultList
             )
         }
     }

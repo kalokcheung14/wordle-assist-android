@@ -7,4 +7,5 @@ interface TypographyInterface {
     val keyboardKey: TextStyle
     val cell: TextStyle
     val topBarText: TextStyle
+    val resultTitleText: TextStyle
 }
