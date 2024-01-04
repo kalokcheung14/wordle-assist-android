@@ -6,10 +6,15 @@ import com.kalok.wordleassist.models.InputAlphabet
 import com.kalok.wordleassist.utilities.Constant.MAX_NUM_OF_GUESS
 import com.kalok.wordleassist.utilities.Constant.NUM_OF_LETTERS
 import com.kalok.wordleassist.utilities.GuessRule
+import com.kalok.wordleassist.utilities.Logger
+import com.kalok.wordleassist.utilities.TimberLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class MainViewModel(private val _guessRule: GuessRule) : ViewModel() {
+class MainViewModel(
+    private val _guessRule: GuessRule,
+    private val _logger: Logger,
+) : ViewModel() {
     private val _selectedIndexFlow by lazy {
         MutableStateFlow(0)
     }
@@ -27,7 +32,8 @@ class MainViewModel(private val _guessRule: GuessRule) : ViewModel() {
 
     private val inputTableSize = NUM_OF_LETTERS * MAX_NUM_OF_GUESS
 
-    fun guess(): ArrayList<String> {
+    fun guess(): List<String> {
+        _logger.i("Start guessing")
         // Pass the input from cells to the GuessRule instance
         inputAlphabets.map { entry ->
             val index = entry.key
