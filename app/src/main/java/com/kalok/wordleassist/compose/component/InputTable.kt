@@ -21,11 +21,12 @@ fun InputTable(
     onEvent: (WordleEvent) -> Unit = {},
 ) {
     val wordLength = Constant.NUM_OF_LETTERS
+    val maxNumOfGuess = Constant.MAX_NUM_OF_GUESS
 
     Column(
         modifier = modifier
     ) {
-        repeat(wordLength) { row ->
+        repeat(maxNumOfGuess) { row ->
             Row(
                 modifier = Modifier
                     .weight(1f)
@@ -46,7 +47,7 @@ fun InputTable(
                             modifier = Modifier.clickableWithoutRipple {
                                 onEvent(WordleEvent.AlphabetCellClicked(cellIndex))
                             },
-                            matchingState = alphabet?.state ?: InputAlphabet.MatchingState.MISMATCH
+                            alphabet = alphabet
                         )
                     }
                 }

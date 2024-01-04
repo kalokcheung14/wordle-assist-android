@@ -3,9 +3,9 @@ package com.kalok.wordleassist.viewmodels
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel
 import com.kalok.wordleassist.models.InputAlphabet
+import com.kalok.wordleassist.utilities.Constant.MAX_NUM_OF_GUESS
 import com.kalok.wordleassist.utilities.Constant.NUM_OF_LETTERS
 import com.kalok.wordleassist.utilities.GuessRule
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
@@ -24,6 +24,8 @@ class MainViewModel(private val _guessRule: GuessRule) : ViewModel() {
     fun setSelectedIndex(index: Int) {
         _selectedIndexFlow.value = index
     }
+
+    private val inputTableSize = NUM_OF_LETTERS * MAX_NUM_OF_GUESS
 
     fun guess(): ArrayList<String> {
         // Pass the input from cells to the GuessRule instance
@@ -60,6 +62,42 @@ class MainViewModel(private val _guessRule: GuessRule) : ViewModel() {
         // If input alphabet is null, create one and pass the alphabet
         // The default matching state will be "mismatch"
         inputAlphabets[index] = inputAlphabets[index]?.copy(alphabet = alphabet) ?: InputAlphabet(alphabet)
+    }
+
+    fun resetCellAt(index: Int) {
+        setAlphabetAt(index, null)
+    }
+
+    fun deleteCellContent(index: Int) {
+        resetCellAt(index)
+        if (index > 0) {
+            // Select last cell
+            setSelectedIndex(index - 1)
+        }
+    }
+
+    fun selectPreviousCell(index: Int) {
+        setSelectedIndex(
+            if (index > 0) {
+                // Select previous cell
+                index - 1
+            } else {
+                // Go to the last cell
+                inputTableSize - 1
+            }
+        )
+    }
+
+    fun selectNextCell(index: Int) {
+        setSelectedIndex(
+            if (index < inputTableSize - 1) {
+                // Select next cell
+                index + 1
+            } else {
+                // Go back to the first cell
+                0
+            }
+        )
     }
 
     fun setMismatchStateAt(index: Int) {

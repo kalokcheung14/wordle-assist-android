@@ -72,7 +72,7 @@ fun MainScreen(
                     .weight(1f)
             ) {
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = { onEvent(WordleEvent.ClearButtonClicked) },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = LocalColors.current.ColorClearButton
                     )

@@ -19,12 +19,14 @@ fun AlphabetCell(
     modifier: Modifier = Modifier,
     index: Int = -1,
     isSelected: Boolean = false,
-    matchingState: InputAlphabet.MatchingState = InputAlphabet.MatchingState.MISMATCH,
+    alphabet: InputAlphabet? = null,
 ) {
+    val input = alphabet ?: InputAlphabet('-', InputAlphabet.MatchingState.MISMATCH)
+
     Box(
         modifier = modifier
             .background(
-                when (matchingState) {
+                when (input.state) {
                     InputAlphabet.MatchingState.MISMATCH -> {
                         LocalColors.current.ColorAlphabetCell
                     }
@@ -42,7 +44,7 @@ fun AlphabetCell(
     ) {
         Text(
             modifier = Modifier.wrapContentSize(),
-            text = stringResource(id = R.string.placeholder),
+            text = input.alphabet?.toString() ?: stringResource(id = R.string.placeholder),
             color = if (isSelected) {
                 LocalColors.current.ColorAlphabetCellTextSelected
             } else {

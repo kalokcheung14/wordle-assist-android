@@ -14,6 +14,7 @@ import com.kalok.wordleassist.compose.LocalColors
 import com.kalok.wordleassist.compose.LocalDimensions
 import com.kalok.wordleassist.compose.WordleAssistTheme
 import com.kalok.wordleassist.models.InputAlphabet
+import com.kalok.wordleassist.utilities.Constant
 
 @Composable
 fun KeyboardView(
@@ -24,11 +25,7 @@ fun KeyboardView(
         modifier = modifier
             .background(MaterialTheme.colors.secondaryVariant)
     ) {
-        val keyRows = listOf(
-            listOf("Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "DEL"),
-            listOf("A", "S", "D", "F", "G", "H", "J", "K", "L", "LAST"),
-            listOf("RESET", "Z", "X", "C", "V", "B", "N", "M", "NEXT"),
-        )
+        val keyRows = Constant.KEY_ROWS
 
         keyRows.forEach { row ->
             Row(
@@ -43,7 +40,10 @@ fun KeyboardView(
                             .weight(if (it.length > 1) 2f else 1f)
                             .padding(
                                 horizontal = LocalDimensions.current.keyboardKeyMargin
-                            )
+                            ),
+                        onClick = { key, keyType ->
+                            onEvent(WordleEvent.KeyboardKeyClicked(key, keyType))
+                        }
                     )
                 }
             }

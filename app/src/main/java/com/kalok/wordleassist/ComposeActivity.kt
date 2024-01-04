@@ -13,12 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
-import androidx.lifecycle.lifecycleScope
 import com.kalok.wordleassist.compose.WordleAssistTheme
 import com.kalok.wordleassist.compose.component.MainScreen
 import com.kalok.wordleassist.models.InputAlphabet
+import com.kalok.wordleassist.models.KeyType
+import com.kalok.wordleassist.utilities.Constant
 import com.kalok.wordleassist.viewmodels.MainViewModel
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ComposeActivity : ComponentActivity() {
@@ -43,6 +43,41 @@ class ComposeActivity : ComponentActivity() {
                             }
                             is WordleEvent.MatchingStateButtonClicked -> {
                                 onClickColorButton(event.matchState)
+                            }
+                            is WordleEvent.KeyboardKeyClicked -> {
+                                val selectedIndex = _viewModel.selectedIndexFlow.value
+                                when (event.keyType) {
+                                    KeyType.FUNCTION -> {
+                                        // Determine function key
+                                        when (event.key) {
+                                            Constant.FUNC_RESET -> {
+                                                _viewModel.resetCellAt(
+                                                    index = selectedIndex,
+                                                )
+                                            }
+                                            Constant.FUNC_DELETE -> {
+                                                _viewModel.deleteCellContent(selectedIndex)
+                                            }
+                                            Constant.FUNC_NEXT -> {
+                                                _viewModel.selectNextCell(selectedIndex)
+                                            }
+                                            Constant.FUNC_LAST -> {
+                                                _viewModel.selectPreviousCell(selectedIndex)
+                                            }
+                                        }
+                                    }
+                                    KeyType.INPUT -> {
+                                        // Set selected cell input
+                                        _viewModel.setAlphabetAt(
+                                            index = selectedIndex,
+                                            alphabet = event.key.first()
+                                        )
+                                        _viewModel.selectNextCell(selectedIndex)
+                                    }
+                                }
+                            }
+                            is WordleEvent.ClearButtonClicked -> {
+                                _viewModel.clearInput()
                             }
                         }
                     })
