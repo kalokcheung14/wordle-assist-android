@@ -1,14 +1,20 @@
 package com.kalok.wordleassist.viewmodels
 
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel
 import com.kalok.wordleassist.models.InputAlphabet
+import com.kalok.wordleassist.utilities.Constant.MAX_NUM_OF_GUESS
 import com.kalok.wordleassist.utilities.Constant.NUM_OF_LETTERS
 import com.kalok.wordleassist.utilities.GuessRule
+import com.kalok.wordleassist.utilities.Logger
+import com.kalok.wordleassist.utilities.TimberLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlin.math.pow
 
-class MainViewModel(private val _guessRule: GuessRule) : ViewModel() {
+class MainViewModel(
+    private val _guessRule: GuessRule,
+    private val _logger: Logger,
+) : ViewModel() {
     private val _selectedIndexFlow by lazy {
         MutableStateFlow(0)
     }
@@ -16,15 +22,22 @@ class MainViewModel(private val _guessRule: GuessRule) : ViewModel() {
         _selectedIndexFlow.asStateFlow()
     }
 
-    private var _inputAlphabets: Array<InputAlphabet?> = arrayOfNulls(NUM_OF_LETTERS.toDouble().pow(2).toInt())
+    val inputAlphabets by lazy {
+        mutableStateMapOf<Int, InputAlphabet?>()
+    }
 
     fun setSelectedIndex(index: Int) {
         _selectedIndexFlow.value = index
     }
 
-    fun guess(): ArrayList<String> {
+    private val inputTableSize = NUM_OF_LETTERS * MAX_NUM_OF_GUESS
+
+    fun guess(): List<String> {
+        _logger.i("Start guessing")
         // Pass the input from cells to the GuessRule instance
-        _inputAlphabets.forEachIndexed { index, inputAlphabet ->
+        inputAlphabets.map { entry ->
+            val index = entry.key
+            val inputAlphabet = entry.value
             inputAlphabet?.state?.let { state ->
                 inputAlphabet.alphabet?.let { alphabet ->
                     // Convert input to lower case for comparison
@@ -51,14 +64,46 @@ class MainViewModel(private val _guessRule: GuessRule) : ViewModel() {
     }
 
     fun setAlphabetAt(index: Int, alphabet: Char?) {
-        if (_inputAlphabets[index] != null) {
-            // If input alphabet is not null, assign the alphabet
-            _inputAlphabets[index]?.alphabet = alphabet
-        } else {
-            // If input alphabet is null, create one and pass the alphabet
-            // The default matching state will be "mismatch"
-            _inputAlphabets[index] = InputAlphabet(alphabet)
+        // If input alphabet is not null, assign the alphabet
+        // If input alphabet is null, create one and pass the alphabet
+        // The default matching state will be "mismatch"
+        inputAlphabets[index] = inputAlphabets[index]?.copy(alphabet = alphabet) ?: InputAlphabet(alphabet)
+    }
+
+    fun resetCellAt(index: Int) {
+        setAlphabetAt(index, null)
+    }
+
+    fun deleteCellContent(index: Int) {
+        resetCellAt(index)
+        if (index > 0) {
+            // Select last cell
+            setSelectedIndex(index - 1)
         }
+    }
+
+    fun selectPreviousCell(index: Int) {
+        setSelectedIndex(
+            if (index > 0) {
+                // Select previous cell
+                index - 1
+            } else {
+                // Go to the last cell
+                inputTableSize - 1
+            }
+        )
+    }
+
+    fun selectNextCell(index: Int) {
+        setSelectedIndex(
+            if (index < inputTableSize - 1) {
+                // Select next cell
+                index + 1
+            } else {
+                // Go back to the first cell
+                0
+            }
+        )
     }
 
     fun setMismatchStateAt(index: Int) {
@@ -74,19 +119,15 @@ class MainViewModel(private val _guessRule: GuessRule) : ViewModel() {
     }
 
     private fun setStateAt(index: Int, state: InputAlphabet.MatchingState) {
-        if (_inputAlphabets[index] != null) {
-            // If input alphabet is not null, assign the state
-            _inputAlphabets[index]?.state = state
-        } else {
-            // If input alphabet is null, create one and pass the state
-            // Set the default alphabet to null
-            _inputAlphabets[index] = InputAlphabet(null, state)
-        }
+        // If input alphabet is not null, assign the state
+        // If input alphabet is null, create one and pass the state
+        // Set the default alphabet to null
+        inputAlphabets[index] = inputAlphabets[index]?.copy(state = state) ?: InputAlphabet(null, state)
     }
 
     fun clearInput() {
         // Reset input alphabet array
-        _inputAlphabets = arrayOfNulls(NUM_OF_LETTERS.toDouble().pow(2).toInt())
+        inputAlphabets.clear()
         // Reset selected index value
         _selectedIndexFlow.value = 0
     }

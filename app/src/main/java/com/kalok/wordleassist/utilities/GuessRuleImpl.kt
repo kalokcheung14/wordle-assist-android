@@ -1,7 +1,7 @@
 package com.kalok.wordleassist.utilities
 
 open class GuessRuleImpl(dictionaryDataSource: DictionaryDataSource): GuessRule(dictionaryDataSource) {
-    override fun guess(): ArrayList<String> {
+    override fun guess(): List<String> {
         // A list to store matched words
         val matchedWords = ArrayList<String>()
 
