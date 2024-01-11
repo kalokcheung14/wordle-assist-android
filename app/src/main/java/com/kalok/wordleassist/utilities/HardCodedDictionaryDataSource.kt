@@ -2326,7 +2326,7 @@ class HardCodedDictionaryDataSource: DictionaryDataSource {
         )
     }
 
-    override fun getDictionary(): HashSet<String> {
+    override fun getDictionary(): Set<String> {
         return _vocabList
     }
 }
