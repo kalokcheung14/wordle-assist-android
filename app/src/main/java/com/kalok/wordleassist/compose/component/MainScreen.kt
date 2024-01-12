@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kalok.wordleassist.R
@@ -75,7 +76,8 @@ fun MainScreen(
                         .padding(10.dp, 0.dp, 10.dp, 0.dp)
                         .wrapContentHeight()
                         .align(Alignment.CenterHorizontally)
-                        .weight(5f),
+                        .weight(5f)
+                        .testTag("input_table"),
                     selectedIndex = selectedIndex.value,
                     onEvent = onEvent,
                     inputAlphabets = viewModel.inputAlphabets
