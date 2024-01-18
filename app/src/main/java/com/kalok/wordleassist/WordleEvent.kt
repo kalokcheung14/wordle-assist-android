@@ -8,4 +8,6 @@ sealed class WordleEvent {
     data class MatchingStateUpdateEvent(val matchState: InputAlphabet.MatchingState): WordleEvent()
     data class InputEvent(val key: String, val keyType: KeyType): WordleEvent()
     object ClearEvent: WordleEvent()
+    object GuessEvent: WordleEvent()
+    object DismissResultEvent: WordleEvent()
 }
