@@ -72,7 +72,7 @@ fun MainScreen(
                     )
                     .padding(it)
             ) {
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(0.4f))
                 InputTable(
                     modifier = Modifier
                         .padding(10.dp, 0.dp, 10.dp, 0.dp)
@@ -122,7 +122,7 @@ fun MainScreen(
                         )
                     }
                 }
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(0.4f))
                 if (!isLandscape) {
                     // Hide this keyboard when in landscape
                     KeyboardView(
