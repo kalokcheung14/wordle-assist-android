@@ -47,6 +47,11 @@ abstract class GuessRule(dictionaryDataSource: DictionaryDataSource) {
         misplacedAlphabetList[position] = charSet
     }
     fun showGuessList(): List<String> {
+        // Remove letters from mismatchAlphabetList, if they also
+        // exist in misplacedAlphabetList or matchedAlphabetList
+        val misplacedOrMatchSet = misplacedAlphabetList.flatten().toSet() + matchedAlphabetList.toSet()
+        mismatchAlphabetList.removeAll(misplacedOrMatchSet)
+
         // Remove unused alphabets from the alphabet list
         alphabetList.removeAll(mismatchAlphabetList)
 

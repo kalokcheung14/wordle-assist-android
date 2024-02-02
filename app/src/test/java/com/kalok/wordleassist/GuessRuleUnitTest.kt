@@ -14,6 +14,7 @@ import org.mockito.BDDMockito.given
 import org.mockito.Mockito
 import kotlin.test.BeforeTest
 import kotlin.test.assertContentEquals
+import kotlin.test.assertNotEquals
 
 class GuessRuleUnitTest: KoinTest {
 
@@ -125,5 +126,32 @@ class GuessRuleUnitTest: KoinTest {
         val result = GuessRuleImpl(mockedDataSource).showGuessList()
 
         assertContentEquals(setOf("apple"), result)
+    }
+
+    @Test
+    fun test_duplicatedAlphabets_DifferentStates_expectMisplacedOverridesMismatch() {
+        guessRule.addMisplacedAlphabet(0, 'e')
+        guessRule.addMismatchAlphabet('e')
+
+        val result = guessRule.showGuessList()
+        assertNotEquals(0, result.size)
+    }
+
+    @Test
+    fun test_duplicatedAlphabets_DifferentStates_expectMatchPositionOverridesMismatch() {
+        guessRule.addMismatchAlphabet('e')
+        guessRule.addMatchAlphabet(4, 'e')
+
+        val result = guessRule.showGuessList()
+        assertNotEquals(0, result.size)
+    }
+
+    @Test
+    fun test_duplicatedAlphabets_DifferentStates_expectMatchOverridesMisplaced() {
+        guessRule.addMisplacedAlphabet(0, 'e')
+        guessRule.addMatchAlphabet(4, 'e')
+
+        val result = guessRule.showGuessList()
+        assertNotEquals(0, result.size)
     }
 }
