@@ -2,14 +2,17 @@ package com.kalok.wordleassist.viewmodels
 
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel
+import com.kalok.wordleassist.MainUiState
 import com.kalok.wordleassist.models.InputAlphabet
 import com.kalok.wordleassist.utilities.Constant.MAX_NUM_OF_GUESS
 import com.kalok.wordleassist.utilities.Constant.NUM_OF_LETTERS
 import com.kalok.wordleassist.utilities.GuessRule
 import com.kalok.wordleassist.utilities.Logger
-import com.kalok.wordleassist.utilities.TimberLogger
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 class MainViewModel(
     private val _guessRule: GuessRule,
@@ -25,6 +28,13 @@ class MainViewModel(
     val inputAlphabets by lazy {
         mutableStateMapOf<Int, InputAlphabet?>()
     }
+
+    val uiState by lazy {
+        MainUiState()
+    }
+    private var latestGuessJob: Job? = null
+
+    private val _mutex by lazy { Mutex() }
 
     fun setSelectedIndex(index: Int) {
         _selectedIndexFlow.value = index
@@ -61,6 +71,37 @@ class MainViewModel(
         _guessRule.clear()
 
         return guessList
+    }
+
+    fun guessAsync() {
+        // Indicate that the result is not loaded
+        uiState.isResultLoaded = false
+
+        // Cancel the previous job if exists
+        cancelGuessJob()
+        // Launch a new coroutine for guessing and assign it as a job to guessJob
+        latestGuessJob = CoroutineScope(Dispatchers.Default).launch {
+            _mutex.withLock {
+                // Clear the result
+                uiState.guessResult.clear()
+                val result = async {
+                    guess().map { it.uppercase() }
+                }
+                // Update the result
+                uiState.guessResult.addAll(result.await())
+                uiState.isResultLoaded = true
+            }
+        }
+    }
+
+    fun cancelGuessJob() {
+        latestGuessJob?.apply {
+            // Cancel the previous job if it is not completed
+            if (!isCompleted) {
+                cancel()
+                _logger.i("Previous job has been cancelled")
+            }
+        }
     }
 
     fun setAlphabetAt(index: Int, alphabet: Char?) {

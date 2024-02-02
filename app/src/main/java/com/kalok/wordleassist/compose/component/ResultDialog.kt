@@ -1,8 +1,10 @@
 package com.kalok.wordleassist.compose.component
 
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -10,6 +12,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
@@ -22,11 +25,16 @@ import com.kalok.wordleassist.compose.WordleAssistTheme
 fun ResultDialog(
     onDismiss: () -> Unit,
     guess: List<String>,
+    isResultLoaded: Boolean = true,
 ) {
     val wordPadding = LocalDimensions.current.resultWordPadding
+    val isLandscape = LocalConfiguration.current.orientation == ORIENTATION_LANDSCAPE
 
     Dialog(
-        onDismissRequest = onDismiss
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false
+        )
     ) {
         Card(
             modifier = Modifier
@@ -69,8 +77,30 @@ fun ResultDialog(
                     }
                 }
                 Divider()
-                if (guess.isNotEmpty()) {
-                    LazyColumn(
+                if (!isResultLoaded) {
+                    // Display progress bar when loading
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colors.primary,
+                            modifier = Modifier
+                                .wrapContentHeight()
+                                .padding(wordPadding)
+                        )
+                    }
+                } else if (guess.isNotEmpty()) {
+                    LazyVerticalGrid(
+                        // Determine grid size base on orientation
+                        columns = GridCells.Fixed(
+                            if (isLandscape) {
+                                3
+                            } else {
+                                1
+                            }
+                        ),
                         modifier = Modifier
                             .padding(
                                 bottom = wordPadding
@@ -113,12 +143,12 @@ fun ResultDialogPreview() {
         ResultDialog(
             onDismiss = {},
             guess = listOf(
-                "Hello",
-                "World",
-                "These",
-                "Words",
-                "Never",
-                "Match",
+                "HELLO",
+                "WORLD",
+                "THESE",
+                "WORDS",
+                "NEVER",
+                "MATCH",
             )
         )
     }
@@ -131,6 +161,18 @@ fun ResultDialogEmptyPreview() {
         ResultDialog(
             onDismiss = {},
             guess = listOf()
+        )
+    }
+}
+
+@Composable
+@Preview
+fun ResultDialogLoadingPreview() {
+    WordleAssistTheme {
+        ResultDialog(
+            onDismiss = {},
+            guess = listOf(),
+            isResultLoaded = false,
         )
     }
 }

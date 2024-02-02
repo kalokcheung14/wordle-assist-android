@@ -4,6 +4,7 @@ import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -13,7 +14,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kalok.wordleassist.R
 import com.kalok.wordleassist.WordleEvent
-import com.kalok.wordleassist.compose.*
+import com.kalok.wordleassist.compose.LocalColors
+import com.kalok.wordleassist.compose.LocalDimensions
+import com.kalok.wordleassist.compose.LocalTypography
 import com.kalok.wordleassist.viewmodels.MainViewModel
 
 @Composable
@@ -23,8 +26,7 @@ fun MainScreen(
 ) {
     val configuration = LocalConfiguration.current
     val selectedIndex = viewModel.selectedIndexFlow.collectAsState()
-    var showResult by remember { mutableStateOf(false) }
-    var resultList = remember { mutableStateListOf<String>() }
+    var showResult by rememberSaveable { mutableStateOf(false) }
     val isLandscape = configuration.orientation == ORIENTATION_LANDSCAPE
 
     Scaffold(
@@ -105,10 +107,8 @@ fun MainScreen(
                     Spacer(modifier = Modifier.weight(1f))
                     Button(
                         onClick = {
-                            resultList = viewModel.guess().map { word ->
-                                word.uppercase()
-                            }.toMutableStateList()
                             showResult = true
+                            onEvent(WordleEvent.GuessEvent)
                         },
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = LocalColors.current.ColorGuessButton
@@ -147,8 +147,12 @@ fun MainScreen(
         // Show the result dialog
         if (showResult) {
             ResultDialog(
-                onDismiss = { showResult = false },
-                guess = resultList
+                onDismiss = {
+                    showResult = false
+                    onEvent(WordleEvent.DismissResultEvent)
+                },
+                guess = viewModel.uiState.guessResult,
+                isResultLoaded = viewModel.uiState.isResultLoaded,
             )
         }
     }

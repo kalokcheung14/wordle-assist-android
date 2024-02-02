@@ -13,12 +13,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import androidx.lifecycle.lifecycleScope
 import com.kalok.wordleassist.compose.WordleAssistTheme
 import com.kalok.wordleassist.compose.component.MainScreen
 import com.kalok.wordleassist.models.InputAlphabet
 import com.kalok.wordleassist.models.KeyType
 import com.kalok.wordleassist.utilities.Constant
 import com.kalok.wordleassist.viewmodels.MainViewModel
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ComposeActivity : ComponentActivity() {
@@ -78,6 +81,12 @@ class ComposeActivity : ComponentActivity() {
                             }
                             is WordleEvent.ClearEvent -> {
                                 _viewModel.clearInput()
+                            }
+                            is WordleEvent.GuessEvent -> {
+                                _viewModel.guessAsync()
+                            }
+                            is WordleEvent.DismissResultEvent -> {
+                                _viewModel.cancelGuessJob()
                             }
                         }
                     })
