@@ -2,8 +2,12 @@ package com.kalok.wordleassist.viewmodels
 
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.kalok.wordleassist.MainUiState
+import com.kalok.wordleassist.WordleEvent
 import com.kalok.wordleassist.models.InputAlphabet
+import com.kalok.wordleassist.models.KeyType
+import com.kalok.wordleassist.utilities.Constant
 import com.kalok.wordleassist.utilities.Constant.MAX_NUM_OF_GUESS
 import com.kalok.wordleassist.utilities.Constant.NUM_OF_LETTERS
 import com.kalok.wordleassist.utilities.GuessRule
@@ -80,7 +84,7 @@ class MainViewModel(
         // Cancel the previous job if exists
         cancelGuessJob()
         // Launch a new coroutine for guessing and assign it as a job to guessJob
-        latestGuessJob = CoroutineScope(Dispatchers.Default).launch {
+        latestGuessJob = viewModelScope.launch {
             _mutex.withLock {
                 // Clear the result
                 uiState.guessResult.clear()
@@ -171,5 +175,74 @@ class MainViewModel(
         inputAlphabets.clear()
         // Reset selected index value
         _selectedIndexFlow.value = 0
+    }
+
+    /**
+     * Handle event of clicking color buttons
+     */
+    private fun onClickColorButton(matchingState: InputAlphabet.MatchingState) {
+        selectedIndexFlow.value.let { selectedIndex ->
+            when(matchingState) {
+                InputAlphabet.MatchingState.MISMATCH -> {
+                    setMismatchStateAt(selectedIndex)
+                }
+                InputAlphabet.MatchingState.MISPLACED -> {
+                    setMisplacedStateAt(selectedIndex)
+                }
+                InputAlphabet.MatchingState.MATCH -> {
+                    setMatchStateAt(selectedIndex)
+                }
+            }
+        }
+    }
+
+    fun handleWordleEvent(event: WordleEvent) {
+        when (event) {
+            is WordleEvent.SelectAlphabetEvent -> {
+                setSelectedIndex(event.index)
+            }
+            is WordleEvent.MatchingStateUpdateEvent -> {
+                onClickColorButton(event.matchState)
+            }
+            is WordleEvent.InputEvent -> {
+                val selectedIndex = selectedIndexFlow.value
+                when (event.keyType) {
+                    KeyType.FUNCTION -> {
+                        // Determine function key
+                        when (event.key) {
+                            Constant.FUNC_RESET -> {
+                                resetCellAt(selectedIndex)
+                            }
+                            Constant.FUNC_DELETE -> {
+                                deleteCellContent(selectedIndex)
+                            }
+                            Constant.FUNC_NEXT -> {
+                                selectNextCell(selectedIndex)
+                            }
+                            Constant.FUNC_LAST -> {
+                                selectPreviousCell(selectedIndex)
+                            }
+                        }
+                    }
+                    KeyType.INPUT -> {
+                        // Set selected cell input
+                        setAlphabetAt(
+                            index = selectedIndex,
+                            alphabet = event.key.first()
+                        )
+                        selectNextCell(selectedIndex)
+                    }
+                }
+            }
+            is WordleEvent.ClearEvent -> {
+                clearInput()
+            }
+            is WordleEvent.GuessEvent -> {
+                guessAsync()
+            }
+            is WordleEvent.DismissResultEvent -> {
+                cancelGuessJob()
+            }
+        }
     }
 }
