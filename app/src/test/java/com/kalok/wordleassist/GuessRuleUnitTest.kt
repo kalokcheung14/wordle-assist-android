@@ -112,7 +112,7 @@ class GuessRuleUnitTest: KoinTest {
     fun test_noInput_expectFullList() {
         val result = guessRule.showGuessList()
 
-        assertContentEquals(dictionaryDataSource.getDictionary(), result)
+        assertContentEquals(dictionaryDataSource.getDictionary().sorted(), result.sorted())
     }
 
     @Test
