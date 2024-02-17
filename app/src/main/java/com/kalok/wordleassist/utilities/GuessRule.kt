@@ -2,10 +2,13 @@ package com.kalok.wordleassist.utilities
 
 abstract class GuessRule(dictionaryDataSource: DictionaryDataSource) {
     protected val vocabList by lazy {
-        dictionaryDataSource.getDictionary().filter {
-            // Filter vocabs that does not match the length allowed
-            it.length == Constant.NUM_OF_LETTERS
-        }
+        dictionaryDataSource.getDictionary()
+            .asSequence()
+            .filter {
+                // Filter vocabs that does not match the length allowed
+                it.length == Constant.NUM_OF_LETTERS
+            }
+            .sorted()
     }
 
     // Convert string that contains a-z alphabets to a set
